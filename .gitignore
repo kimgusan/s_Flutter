@@ -1,0 +1,67 @@
+# Flutter/Dart 관련
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+build/
+pubspec.lock
+
+# iOS 관련
+ios/Flutter/.last_build_id
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework/
+ios/Flutter/App.framework/
+ios/Flutter/engine/
+ios/Flutter/*.xcframework/
+DerivedData/
+.xcworkspace/
+*.xcuserstate
+*.xcuserdata
+
+# Android 관련
+.android/
+app/build/
+*.iml
+.gradle/
+.idea/
+local.properties
+
+# Windows 관련
+windows/flutter/ephemeral/
+
+# macOS 관련
+macos/Flutter/ephemeral/
+macos/Flutter/Flutter.podspec
+
+# Web 관련
+web/.dart_tool/
+
+# Linux 관련
+linux/flutter/ephemeral/
+
+# 기타
+*.log
+*.lock
+*.tmp
+*.swp
+*.DS_Store
+*.keystore
+*.jks
+*.class
+*.pdb
+*.dll
+*.so
+*.dylib
+*.pyc
+*.pyo
+
+# JetBrains IDE (IntelliJ, Android Studio) 관련
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# VS Code 관련
+.vscode/
+.history/
