@@ -29,7 +29,7 @@ Flutter👍
 # Wallet 정적 프로젝트
 - main_wallet.dart / widgets_wallet folder 참고  
 
-<img src="image_wallet.png" alt="Flutter logic image" width="10%" />
+<img src="image_wallet.png" alt="Flutter logic image" width="20%" />
 
 ## Flutter 프로젝트 생성
 
