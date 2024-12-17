@@ -38,7 +38,7 @@ class App extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          'Hey, Selena',
+                          'Hey, Gusan',
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 28,
@@ -69,7 +69,7 @@ class App extends StatelessWidget {
                   height: 5,
                 ),
                 const Text(
-                  '\$5 194 482',
+                  '\$9 194 482',
                   style: TextStyle(
                     fontSize: 48,
                     fontWeight: FontWeight.w600,
