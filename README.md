@@ -26,10 +26,15 @@ Flutter👍
 
 ---
 
-# Wallet 정적 프로젝트
+# Wallet 정적 프로젝트 (Stateless)
 - main_wallet.dart / widgets_wallet folder 참고  
 
 <img src="image_wallet.png" alt="Flutter logic image" width="20%" />
+
+# Pomodors 동적 프로젝트 (Statefull)
+- main_pomodors.dart / home_screen.dart 참고  
+
+<img src="image_pomodors.png" alt="Flutter logic image" width="20%" />
 
 ## Flutter 프로젝트 생성
 
@@ -154,4 +159,192 @@ AnimatedContainer(
 
 ---
 
+## Widget
+1. Stateless: 데이터가 이미 담겨져 있는 UI (고정)
+2. Stateful: 데이터에 따라 변동되는 UI (유동)
 
+### setState 함수
+
+setState: State클래스에게 데이터가 변경되었다고 알려주는 함수  
+(build 메소드가 다시 실행)
+```
+  왠만해서는 이렇게 사용할 것.
+  void onClicked() {
+    setState(() {
+      counter = counter + 1;
+    });
+  }
+
+  or 
+  
+  void onClicked() {
+    counter = counter + 1;
+    setState(() {});
+  }
+```
+
+### BuildContext
+
+- context는 Text 이전에 있는 모든 상위 요소들에 대한 정보
+- 상위 위젯들의 정보에 접근 가능
+- Theme, MediaQuery 등 전역적으로 사용되는 데이터 접근 가능
+```
+class _AppState extends State<App> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(
+        textTheme: const TextTheme(
+          titleLarge: TextStyle(
+            color: Colors.red,
+          ),
+        ),
+      ),
+      home: const Scaffold(
+        backgroundColor: Color(0xFFF4EDDB),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              MyLargeTitle(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+위젯
+
+class MyLargeTitle extends StatelessWidget {
+  const MyLargeTitle({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      'My Large Title',
+      style: TextStyle(
+        fontSize: 30,
+        color: Theme.of(context).textTheme.titleLarge?.color,
+      ),
+    );
+  }
+}
+
+````
+### Widjet Lifecycle
+- initState: 부모요소의 값을 자식요소에서 변경하고 싶을 때 사용하는 메서드
+```
+@override
+  void initState() {
+    super.initState();
+  }
+```
+- dispose는 Flutter의 StatefulWidget에서 위젯이 위젯 트리에서 영구적으로 제거될 때 호출되는 메서드입니다.
+1. dispose가 필요한 이유
+    - 메모리 누수 방지
+    - 사용하지 않는 리소스 정리
+    - 불필요한 리소스 소비 방지
+    - 예) API 업데이트, 이벤트 리스너 구독 취소, form 리스너로부터 벗어날 때 사용.
+```
+  @override
+  void dispose() {
+    // 컨트롤러들 정리
+    _textController.dispose();
+    _scrollController.dispose();
+    _animationController.dispose();
+    
+    // 스트림 구독 취소
+    _streamSubscription.cancel();
+    
+    // 마지막에 반드시 호출
+    super.dispose();
+```
+
+---
+# Podomo
+- 앱 시작 전에 theme 으로 앱의 전반적인 색상을 전해놓고 사용
+```
+class _AppState extends State<App> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(
+        // 과거 사용된 부분
+        // backgroundColor: const Color(0xFFE7266C),
+
+        // scaffold 전체 배경
+        // scaffoldBackgroundColor: const Color(0xFFE7266C),
+
+        // 앱의 전반적인 배경 테마로 사용되는 색상
+        colorScheme: ColorScheme.fromSwatch(
+          backgroundColor: const Color(0xFFE7266C),
+        ),
+        textTheme: const TextTheme(
+          displayLarge: TextStyle(
+            color: Color(0xFF232B55),
+          ),
+        ),
+        cardColor: const Color(0xFFF4EDDB),
+      ),
+      home: const Scaffold(
+        body: Center(),
+      ),
+    );
+  }
+}
+```
+
+### Flexible
+- Flexible은 자식 위젯의 크기를 유연하게 조절할 수 있게 해주는 위젯입니다.
+- 장점
+    1. 반응형 레이아웃 구현 용이
+    2. 다양한 화면 크기에 대응 가능
+    3. 비율 기반 레이아웃으로 유연한 UI 구성
+```
+Column(
+  children: [
+    // 화면의 30%
+    Flexible(
+      flex: 3,
+      child: Container(
+        color: Colors.red,
+        child: Text('상단 영역'),
+      ),
+    ),
+    // 화면의 70%
+    Flexible(
+      flex: 7,
+      child: Container(
+        color: Colors.blue,
+        child: Text('하단 영역'),
+      ),
+    ),
+  ],
+)
+```
+
+#### Timer: 시간에 관련된 위젯
+```
+  void onTick(Timer timer) {
+    if (totalSeconds == 0) {
+      setState(() {
+        totalPomodors = totalPomodors + 1;
+        isRunning = false;
+        totalSeconds = twentyFiveMunutes;
+      });
+      timer.cancel();
+    } else {
+      setState(() {
+        totalSeconds = totalSeconds - 1;
+      });
+    }
+```
+
+
+
+return duration.toString().split(".").first.substring(2, 7);
+: 문자열기준으로 나누기, 첫번째 항목 가져오기, 문자열 자르기
