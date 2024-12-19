@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:toonflix/widgets/currency_cart.dart';
-import './widgets/button.dart';
+import 'package:toonflix/widgets_wallet/currency_cart.dart';
+import './widgets_wallet/button.dart';
 
 class Player {
   String? name;

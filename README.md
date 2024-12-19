@@ -10,7 +10,7 @@
 6. iOS, 안드로이드, 맥OS, 윈도우, 리눅스를 위한 다양한 Embedder이 존재한다.
 7. Embedder의 역할: 엔진 가동시키기
 
--   엔진을 또다른 VM(가상 머신)이라고 생각해도 된다. 가상머신이 코드를 실행시키기 때문에 OS 에 구애받지 않고 코드를 실행시켜준다.
+-   엔진을 또다른 VM(가상��신)이라고 생각해도 된다. 가상머신이 코드를 실행시키기 때문에 OS 에 구애받지 않고 코드를 실행시켜준다.
 
 ![Flutter logic image](image.png)
 
@@ -46,7 +46,7 @@ flutter create my_app
 ```
 
 - 프로젝트 이름은 소문자로 시작해야 한다.
-- 프로젝트 이름은 띄어쓰기가 있으면 안된다.
+- 프로젝트 이름은 띄어쓰기가 있으면 안된���.
 - 프로젝트 이름은 특수문자가 있으면 안된다.
 - 프로젝트 이름은 숫자로 시작해서는 안된다.
 
@@ -299,7 +299,7 @@ class _AppState extends State<App> {
 ```
 
 ### Flexible
-- Flexible은 자식 위젯의 크기를 유연하게 조절할 수 있게 해주는 위젯입니다.
+- Flexible은 자식 위젯의 크기를 유연하게 조절 수 있게 해주는 위젯입니다.
 - 장점
     1. 반응형 레이아웃 구현 용이
     2. 다양한 화면 크기에 대응 가능
@@ -327,6 +327,7 @@ Column(
 )
 ```
 
+
 #### Timer: 시간에 관련된 위젯
 ```
   void onTick(Timer timer) {
@@ -348,3 +349,394 @@ Column(
 
 return duration.toString().split(".").first.substring(2, 7);
 : 문자열기준으로 나누기, 첫번째 항목 가져오기, 문자열 자르기
+
+
+### Expanded
+
+- Expanded는 child 위젯이 사용 가능한 공간을 채우도록 확장시키는 위젯입니다.
+- Row나 Column의 자식 위젯으로 사용
+- 남은 공간을 채우고 싶을 때
+- 위젯들 간의 비율을 조절하고 싶을 때
+```
+Column(
+  children: [
+    // 상단 고정 크기
+    Container(
+      height: 100,
+      color: Colors.blue,
+    ),
+    // 중간 가변 크기 (남은 공간 모두 차지)
+    Expanded(
+      child: Container(
+        color: Colors.red,
+      ),
+    ),
+    // 하단 고정 크기
+    Container(
+      height: 100,
+      color: Colors.green,
+    ),
+  ],
+)
+```
+
+#### Expanded vs Flexible
+- Expanded는 Flexible의 fit: FlexFit.tight를 사용한 특수한 경우
+- Expanded는 반드시 사용 가능한 모든 공간을 차지
+- Flexible은 필요한 만큼만 공간을 차지하고 싶을 때 사용
+- Expanded는 레이아웃을 구성할 때 매우 유용한 위젯이며, 특히 반응형 UI를 만들 때 자주 사용됩니다.
+--- 
+
+# Webtoon 
+
+## AppBar
+- AppBar는 Flutter의 Material Design에서 제공하는 상단 네비게이션 바 위젯입니다. 
+```
+AppBar(
+  backgroundColor: Colors.white,     // 배경색
+  foregroundColor: Colors.black,     // 아이콘과 텍스트 색상
+  elevation: 0,                      // 그림자 효과 (0은 그림자 없음)
+  centerTitle: true,                 // 제목 중앙 정렬
+  toolbarHeight: 60,                 // AppBar 높이
+  shape: RoundedRectangleBorder(     // AppBar 모양
+    borderRadius: BorderRadius.vertical(
+      bottom: Radius.circular(20),
+    ),
+  ),
+)
+```
+## Data Fetching
+
+- pub.dev 공식 패키지 보관소 (Flutter, Dart)  
+  > node.js 이나, python의 PyPI 랑 비슷한 개념.
+
+### Data Fetching
+- http 패키지
+1. 패키지 설치
+```
+dependencies:
+  http: ^1.1.0  # 최신 버전 사용
+```
+2. 기본사용법
+```
+import 'package:http/http.dart' as http;
+
+Future<void> fetchData() async {
+  final url = Uri.parse('https://api.example.com/data');
+  final response = await http.get(url);
+  
+  if (response.statusCode == 200) {
+    // 성공적으로 데이터를 받아온 경우
+    print(response.body);
+  } else {
+    // 에러 처리
+    throw Exception('Failed to load data');
+  }
+}
+```
+3. 주요 HTTP 메서드들
+```
+// GET 요청
+final response = await http.get(url);
+
+// POST 요청
+final response = await http.post(
+  url,
+  headers: {'Content-Type': 'application/json'},
+  body: jsonEncode({'key': 'value'}),
+);
+
+// DELETE 요청
+final response = await http.delete(url);
+
+// PUT 요청
+final response = await http.put(url);
+```
+
+### async / await 비동기 처리 (Asynchronous function 비동기 함수)
+비동기 처리는 작업이 완료될 때까지 프로그램의 실행을 멈추지 않고, 다른 작업을 계속 수행할 수 있게 해주는 프로그래밍 방식입니다. (side effect 를 기대한다)
+
+### 생성자
+
+```
+1. WebtoonModel 클��스 정의
+
+class WebtoonModel {
+  final String title, thumb, id;
+
+  WebtoonModel.fromJson(Map<String, dynamic> json)
+      : title = json['title'],
+        thumb = json['thumb'],
+        id = json['id'];
+}
+```
+
+```
+2. API 데이터 처리
+
+  Future<List<WebtoonModel>> getTodaysToos() async {
+    List<WebtoonModel> webtoonInstances = [];
+
+    final url = Uri.parse('$baseUrl/$today');
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      final List<dynamic> webtoons = jsonDecode(response.body);
+      for (var webtoon in webtoons) {
+        webtoonInstances.add(WebtoonModel.fromJson(webtoon));
+      }
+      return webtoonInstances;
+    }
+    throw Error();
+  }
+```
+
+## waitForWebToons
+```
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  List<WebtoonModel> webtoons = [];
+  bool isLoading = true;
+
+  void waitForWebToons() async {
+    webtoons = await ApiService.getTodaysToos();
+    isLoading = false;
+    setState(() {});
+  }
+
+  // 웹툰을 받아오는 함수를 최초에 실행시킨다.
+  @override
+  void initState() {
+    super.initState();
+    waitForWebToons();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    ... 중략
+  }
+```
+
+### static const
+- static: 클래스의 모든 인스턴스가 같은 값을 공유  
+인스턴스마다 새로운 변수를 만들지 않아도 된다
+
+
+### FutureBuilder
+- FutureBuilder는 비동기 데이터를 UI에 쉽게 반영할 수 있게 해주는 유용한 위젯입니다.
+```
+body: FutureBuilder(
+        future: webtoons,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return const Text("There is Data");
+          }
+          return const Text("loading...");
+        },
+      )
+```
+
+```
+FutureBuilder<List<WebtoonModel>>(
+  future: webtoons,
+  builder: (context, snapshot) {
+    if (snapshot.hasError) {
+      return Center(
+        child: Text('Error: ${snapshot.error}'),
+      );
+    }
+
+    if (snapshot.hasData) {
+      return ListView.separated(
+        scrollDirection: Axis.horizontal,
+        itemCount: snapshot.data!.length,
+        itemBuilder: (context, index) {
+          var webtoon = snapshot.data![index];
+          return Text(webtoon.title);
+        },
+        separatorBuilder: (context, index) => const SizedBox(
+          width: 20,
+        ),
+      );
+    }
+
+    // 로딩 상태
+    return const Center(
+      child: CircularProgressIndicator(),
+    );
+  },
+  ```
+1. 상태 처리
+- 에러 상태 (hasError)
+- 데이�� 있는 상태 (hasData)
+- 로딩 상태 (기본)
+2. snapshot 객체
+- hasData: 데이터 존재 여부
+- hasError: 에러 존재 여부
+- data: 실제 데이터
+- error: 에러 정보
+
+주요 특징:
+1. 동시성 처리: 여러 작업을 동시에 처리할 수 있음
+2. 블로킹 방지: 시간이 오래 걸리는 작업이 앱의 실행을 막지 않음
+3. 효율적인 리소스 사용: CPU와 메모리를 효율적으로 활용
+
+
+### Clip (클리핑)
+1. clipBehavior: 자식 위젯이 부모 위젯의 영역을 벗어날 때 어떻게 처리할지 결정하는 속성입니다.
+- 필요한 경우에만 클리핑을 사용하고, 가능한 성능이 좋은 옵션을 선택하는 것이 좋다.
+```
+enum Clip {
+  none,      // 클리핑 없음 (기본값) / 가장 성능이 좋음
+  hardEdge,  // 부드럽지 않은 직선 클리핑 / 적당한 성능
+  antiAlias, // 부드러운 클리핑 (성능 영향 있음) / 부드럽지만 비용 발생
+  antiAliasWithSaveLayer, // 가장 부드럽지만 성능 비용이 큼
+}
+```
+
+## Detail Screen
+0. GestureDetector: 사용자의 제스처(터치, 탭 등)를 감지하는 위젯입니다.
+
+1. Navigator.push
+- 새로운 화면으로 이동
+- 스택 구조로 화면을 쌓음
+- 뒤로가기 가능
+2. MaterialPageRoute
+- 머티리얼 디자인 스타일의 페이지 전환 애니메��션
+- builder 패턴으로 새 화면 생성
+
+#### 기본 구조
+```
+GestureDetector(
+  onTap: () {
+    // 탭했을 때 실행될 코드
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DetailScreen(
+          title: title,
+          thumb: thumb,
+          id: id,
+        ),
+      ),
+    );
+  },
+  child: YourWidget(),  // 탭 가능한 위젯
+)
+```
+
+#### 다른 제스처 감지 옵션
+```
+GestureDetector(
+  onTap: () {},      // 탭
+  onDoubleTap: () {},// 더블 탭
+  onLongPress: () {},// 길게 누르기
+  onPanUpdate: () {},// 드래그
+  child: Widget(),
+)
+```
+#### 네비게이션 관련 다른 메서드들.
+```
+// 뒤로가기
+Navigator.pop(context);
+
+// 교체하기 (현재 화면을 새 화면으로 교체)
+Navigator.pushReplacement(
+  context,
+  MaterialPageRoute(builder: (context) => NewScreen()),
+);
+
+// 모든 화면을 지우고 새로 시작
+Navigator.pushAndRemoveUntil(
+  context,
+  MaterialPageRoute(builder: (context) => NewScreen()),
+  (route) => false,
+);
+```
+
+### Hero: 애니메이션이 들어가게 있도록 하는 widget
+1. 에니메이션 효과
+- 크기 변화
+- 위치 이동
+- 자연스러운 전환
+- 사례: 이미지 상세보기, 아이콘 확대, 리스트에서 상세화면으로 전환
+```
+// 리스트 화면
+GestureDetector(
+  onTap: () => Navigator.push(...),
+  child: Hero(
+    tag: webtoon.id,  // 웹툰의 고유 ID를 태그로 사용
+    child: Container(
+      width: 250,
+      clipBehavior: Clip.hardEdge,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Image.network(webtoon.thumb),
+    ),
+  ),
+)
+
+// 상세 화면
+Hero(
+  tag: webtoon.id,  // 동일한 ID
+  child: Container(
+    width: 400,
+    clipBehavior: Clip.hardEdge,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(15),
+    ),
+    child: Image.network(webtoon.thumb),
+  ),
+)
+```
+
+## api services 사용 시 argument값을 요구하는 경우.
+
+```
+
+class DetailScreen extends StatefulWidget {
+  final String id;  // 부모로부터 받은 ID
+  
+  const DetailScreen({
+    super.key,
+    required this.id,  // 필수 매개변수로 ID 받기
+  });
+
+  @override
+  State<DetailScreen> createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+  // Future 변수 선언
+  late Future<WebtoonDetailModel> webtoon;
+  
+  @override
+  void initState() {
+    super.initState();
+    // widget.id를 통해 부모로부터 받은 ID 접근
+    webtoon = ApiService.getToonById(widget.id);  // API 호출
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: FutureBuilder(
+        future: webtoon,  // 초기화된 Future 사용
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            // 데이터 표시
+            return Text(snapshot.data!.title);
+          }
+          return const CircularProgressIndicator();
+        },
+      ),
+    );
+  }
+}
+```
