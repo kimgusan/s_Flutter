@@ -43,14 +43,9 @@ Flutter👍
 
 <div style="display: inline-block; margin-right: 10px;">
   <img src="image_webtoon_main.png" alt="Flutter logic image" width="20%" />
-</div>
-<div style="display: inline-block; margin-right: 10px;">
   <img src="image_webtoon_detail.png" alt="Flutter logic image" width="20%" />
-</div>
-<div style="display: inline-block;">
   <img src="image_webtoon_link.png" alt="Flutter logic image" width="20%" />
 </div>
-
 
 ## Flutter 프로젝트 생성
 
