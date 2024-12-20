@@ -36,6 +36,16 @@ Flutter👍
 
 <img src="image_pomodors.png" alt="Flutter logic image" width="20%" />
 
+# webtoon 링크 프로젝트 (Statefull / Stateless)
+- main.dart / models / screens / services / widget 확인
+
+- 웹툰 이미지의 경우 저작권 문제가 있을 수 있기 때문에 일부 masking 처리 
+
+<img src="image_webtoon_main.png" alt="Flutter logic image" width="20%" />
+<img src="image_webtoon_detail.png" alt="Flutter logic image" width="20%" />
+<img src="image_webtoon_link.png" alt="Flutter logic image" width="20%" />
+
+
 ## Flutter 프로젝트 생성
 
 - vscode 로 실행키기기 위해서는 시뮬래이터, 또는 웹 페이지를 개별로 실행시켜야한다. (debug 모드)
@@ -740,3 +750,89 @@ class _DetailScreenState extends State<DetailScreen> {
   }
 }
 ```
+
+## Url_Launcher
+- url_launcher는 Flutter에서 URL을 열거나 전화, 이메일 등의 외부 앱을 실행할 수 있게 해주는 패키지입니다.
+- 각 플랫폼 별로 설정을 추가해줘야 사용 가능
+(안드로이드: AndroidManifest.xml / ios: Info.plist)
+
+```
+import 'package:url_launcher/url_launcher.dart';
+
+// URL 실행
+final url = Uri.parse('https://example.com');
+if (await canLaunchUrl(url)) {
+  await launchUrl(url);
+} else {
+  throw 'Could not launch $url';
+}
+
+// 전화걸기
+launchUrl(Uri.parse('tel:+1234567890'))
+// 이메일 보내기
+launchUrl(Uri.parse('mailto:example@example.com'))
+// 문자 보내가
+launchUrl(Uri.parse('sms:1234567890'))
+
+```
+1. LaunchMode 옵션
+- externalApplication: 외부 브라우저로 열기
+- inAppWebView: 앱 내부 웹뷰로 열기
+- platformDefault: 플랫폼 기본 동작
+- url_launcher는 앱에서 외부 리소스나 앱을 실행할 때 매우 유용한 패키지입니다.
+
+## shared_preferences 
+- Shared Preferences는 간단한 키-값 쌍을 로컬에 저장하는 데 사용되는 Flutter 플러그인입니다.
+```
+import 'package:shared_preferences/shared_preferences.dart';
+
+// 데이터 저장
+Future<void> saveData() async {
+  final prefs = await SharedPreferences.getInstance();
+  
+  // 다양한 타입 저장
+  await prefs.setString('name', 'John');
+  await prefs.setInt('age', 25);
+  await prefs.setBool('isLoggedIn', true);
+  await prefs.setStringList('favorites', ['A', 'B', 'C']);
+}
+
+// 데이터 읽기
+Future<void> loadData() async {
+  final prefs = await SharedPreferences.getInstance();
+  
+  // 데이터 가져오기
+  final name = prefs.getString('name') ?? 'No name';
+  final age = prefs.getInt('age') ?? 0;
+  final isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+  final favorites = prefs.getStringList('favorites') ?? [];
+}
+```
+```
+class _HomeScreenState extends State<HomeScreen> {
+  late SharedPreferences prefs;
+  List<String> likedToons = [];
+
+  // 초기화
+  Future initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+    final likedToons = prefs.getStringList('likedToons') ?? [];
+    setState(() {
+      this.likedToons = likedToons;
+    });
+  }
+
+  // 데이터 저장
+  Future<void> saveLikedToon(String id) async {
+    final updatedToons = [...likedToons, id];
+    await prefs.setStringList('likedToons', updatedToons);
+    setState(() {
+      likedToons = updatedToons;
+    });
+  }
+```
+
+1. 주의사항
+- 민감한 데이터(비밀번호 등) 저장은 피해야 함
+- 용량이 큰 데이터는 다른 저장소 사용 권장
+- 비동기 처리 필요 (async/await 사용)
