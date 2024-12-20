@@ -41,9 +41,15 @@ Flutter👍
 
 - 웹툰 이미지의 경우 저작권 문제가 있을 수 있기 때문에 일부 masking 처리 
 
-<img src="image_webtoon_main.png" alt="Flutter logic image" width="20%" />
-<img src="image_webtoon_detail.png" alt="Flutter logic image" width="20%" />
-<img src="image_webtoon_link.png" alt="Flutter logic image" width="20%" />
+<div style="display: inline-block; margin-right: 10px;">
+  <img src="image_webtoon_main.png" alt="Flutter logic image" width="20%" />
+</div>
+<div style="display: inline-block; margin-right: 10px;">
+  <img src="image_webtoon_detail.png" alt="Flutter logic image" width="20%" />
+</div>
+<div style="display: inline-block;">
+  <img src="image_webtoon_link.png" alt="Flutter logic image" width="20%" />
+</div>
 
 
 ## Flutter 프로젝트 생성
