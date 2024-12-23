@@ -416,6 +416,7 @@ AppBar(
   ),
 )
 ```
+
 ## Data Fetching
 
 - pub.dev 공식 패키지 보관소 (Flutter, Dart)  
@@ -837,3 +838,198 @@ class _HomeScreenState extends State<HomeScreen> {
 - 민감한 데이터(비밀번호 등) 저장은 피해야 함
 - 용량이 큰 데이터는 다른 저장소 사용 권장
 - 비동기 처리 필요 (async/await 사용)
+
+# Flutter App Project 
+
+## MediaQeury
+- MediaQuery는 Flutter에서 화면의 크기와 방향, 그리고 다양한 디바이스의 특성을 가져오는 데 사용되는 위젯입니다. 주로 반응형 디자인을 구현할 때 유용합니다.
+- 반응형 size 구할 때 사용.
+1. 화면크기 (MediaQuery.of(context).size)
+2. 화면비율 (MediaQuery.of(context).devicePixcelRatio)
+3. 상태바 비율 (MediaQuery.of(context).padding.top)
+4. SafeArea 내 패딩 (MediaQuery.of(context).viewpadding.top / bottom)
+5. Orientation - 가로,세로 (MediaQuery.of(context).orientation == Orientation.portrait / Orientation.landscape)
+
+```
+Container(
+  width: MediaQuery.of(context).size.width / 2, // 화면 너비의 절반
+  height: 100,
+  color: Colors.blue,
+)
+```
+
+## GestureDetector : 터치감지
+1. TextButton: 텍스트 입력 버튼
+2. GestureDetector 
+- GestureDetector는 Flutter에서 사용자의 제스처(터치, 스와이프, 더블탭 등)를 감지하는 위젯입니다. 이 위젯을 사용하면 다양한 사용자 상호작용을 처리할 수 있습니다.
+
+### 주요 제스쳐 
+- onTap: 사용자가 탭했을 때 호출됩니다.
+- onDoubleTap: 사용자가 더블탭했을 때 호출됩니다.
+- onLongPress: 사용자가 길게 누를 때 호출됩니다.
+- onPanUpdate: 사용자가 드래그할 때 호출됩니다.
+```
+GestureDetector(
+  onTap: () {
+    // 사용자가 탭했을 때 실행될 코드
+    print("Tapped!");
+  },
+  child: Container(
+    color: Colors.blue,
+    width: 100,
+    height: 100,
+    child: Center(child: Text("Tap me")),
+  ),
+)
+```
+
+## ListView 
+- ListView는 Flutter에서 스크롤 가능한 리스트를 생성하는 데 사용되는 위젯입니다. 주로 여러 개의 항목을 나열할 때 유용하며, 사용자가 스크롤하여 더 많은 항목을 볼 수 있도록 합니다.
+- Column은 자식 위젯들을 수직으로 나열하는 위젯이지만, 화면에 표시할 수 있는 공간이 부족할 경우 오버플로우 오류가 발생할 수 있습니다. 반면, ListView는 스크롤 기능을 제공하므로, 항목이 많아도 문제없이 표시할 수 있습니다.
+- ListView는 다양한 방법으로 항목을 생성할 수 있습니다. 예를 들어, ListView.builder를 사용하면 동적으로 항목을 생성할 수 있으며, ListView.separated를 사용하면 항목 사이에 구분선을 추가할 수 있습니다.
+```
+ListView(
+  children: <Widget>[
+    postContainer(title: "Title 1"),
+    postContainer(title: "Title 2"),
+    postContainer(title: "Title 3"),
+    // 더 많은 항목 추가 가능
+  ],
+)
+
+Widget ListTitle({String title = ''}){
+  return ...
+}
+
+```
+
+### ListView 효율적으로 사용하기
+1. ListBuilder
+- ListView.builder는 Flutter에서 긴 리스트를 효율적으로 생성하고 표시하기 위해 사용되는 위젯입니다. 이 위젯은 특히 항목의 수가 많거나 동적으로 생성되는 경우에 유용합니다.
+
+- ListView.builder는 두 개의 주요 매개변수를 받습니다: itemCount와 itemBuilder.
+- itemCount: 리스트에 표시할 항목의 총 수를 지정합니다.
+- itemBuilder: 각 항목을 생성하는 함수로, 인덱스를 매개변수로 받아 해당 인덱스에 해당하는 위젯을 반환합니다.
+
+```
+
+// 변수 생성 (final 또는 var 로 생성)
+final postList = [
+  {
+  title: "Title 1"
+  },
+  {
+  title: "Title 2"
+  },
+]
+
+
+ListView.builder(
+  itemCount: 100, // 총 100개의 항목
+  itemBuilder: (context, index) {
+    
+    return postList(
+      title: postList[index]["title"] as String// 각 항목의 텍스트
+    );
+  },
+)
+```
+
+## GridView : 표처럼 나타낼 수 있는 그리드 뷰
+- GridView는 Flutter에서 항목을 격자 형태로 나열할 수 있는 위젯입니다. 주로 이미지 갤러리, 카드 목록, 또는 그리드 형식으로 데이터를 표시할 때 유용합니다.
+- GridView는 항목을 행(row)과 열(column)로 구성된 격자 형태로 배치합니다. 이를 통해 여러 항목을 동시에 표시할 수 있으며, 사용자가 스크롤하여 더 많은 항목을 볼 수 있습니다.
+
+### GridView.count
+```
+GridView.count(
+  crossAxisCount: 2, // 한 행에 2개의 항목
+  children: <Widget>[
+    Container(color: Colors.red, height: 100),
+    Container(color: Colors.green, height: 100),
+    Container(color: Colors.blue, height: 100),
+    Container(color: Colors.yellow, height: 100),
+  ],
+)
+```
+
+### GridView.builder
+```
+GridView.builder(
+  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+    crossAxisCount: 3, // 한 행에 3개의 항목
+  ),
+  itemCount: 30, // 총 30개의 항목
+  itemBuilder: (context, index) {
+    return Card(
+      color: Colors.primaries[index % Colors.primaries.length],
+      child: Center(child: Text('Item $index')),
+    );
+  },
+```
+
+### GridView 효율적으로 사용하기
+```
+GridView.builder(
+  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+    crossAxisCount: 2, // 한 행에 2개의 항목
+    crossAxisSpacing: 15.0, // 항목 간의 수평 간격
+    mainAxisSpacing: 15.0, // 항목 간의 수직 간격
+  ),
+  itemCount: 20, // 총 20개의 항목
+  itemBuilder: (context, index) {
+    return Container(
+      color: Colors.primaries[index % Colors.primaries.length], // 색상 설정
+      child: Center(
+        child: Text(
+          'Item $index',
+          style: TextStyle(color: Colors.white, fontSize: 20),
+        ),
+      ),
+    );
+  },
+),
+```
+## Scroll 기능 구현
+1. SingleChildScrollView
+- 자식 위젯의 높이가 부모 위젯(화면)을 초과하면 전체 위젯이 스크롤됩니다.
+- SingleChildScrollView 내부에 특정 위젯(예: Container, Column)의 높이가 고정되면 그 고정된 영역만 스크롤됩니다.  
+부모 위젯의 크기와 관계없이 자식 위젯의 크기에 따라 동작이 달라집니다.
+
+
+## Align 정렬 기능 구현
+
+
+--- 
+# Map Project
+```
+1. leading
+- AppBar의 가장 왼쪽에 위치
+- 하나의 위젯만 배치 가능
+- 보통 뒤로가기 버튼이나 메뉴 아이콘으로 사용
+- Scaffold에 drawer가 있으면 자동으로 메뉴 아이콘 표시
+2. title
+AppBar의 중앙에 위치 (centerTitle 속성으로 조절 가능)
+일반적으로 앱이나 현재 화면의 제목
+3. actions
+- AppBar의 오른쪽에 위치
+- 여러 위젯을 리스트로 배치 가능
+- 검색, 설정, 더보기 등의 아이콘들을 배치
+```
+
+## Completer 
+- 비동기 작업의 상태를 수동으로 완료하는 도구
+
+## Stack 위젯
+- 자식 위젯들을 겹쳐서 배치할 수 있기 때문에 버튼을 지도위에 오버레이 형태로 나타낼 수 있다.
+
+
+## 이슈
+1. naver map sdk 지원 (sdk version 23) / 2. 카카오 webview 를 이용한 지원
+
+### 문제 
+1. 안드로이드 빌드 안되는 증상 확인.  (해결)
+- android.nonTransitiveRClass=false
+  > (https://github.com/users/note11g/projects/2/views/2?filterQuery=comp&pane=issue&itconemId=61082506&issue=note11g%7Cflutter_naver_map%7C225)
+
+2. kakao_map_flutter 사용하려고 했을 때 빌드 안되는 증상 발생
+- :location 항목에 namespace를 추가하라는 문구 발생 => 실제로 location 모듈을 사용하지 않으나 명시히라라는 부분 확인
