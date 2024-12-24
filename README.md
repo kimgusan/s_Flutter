@@ -997,6 +997,19 @@ GridView.builder(
 
 
 ## Align 정렬 기능 구현
+1. Alignment: 내부 위젯의 정렬 방식을 정의합니다. 일반적으로 수평(horizontal) 및 수직(vertical) 정렬 옵션이 있으며, 각 방향에 대해 왼쪽, 중앙, 오른쪽, 위, 중간, 아래와 같은 정렬 방식이 있습니다.
+2. Align 메서드: 이 메서드는 특정 위젯을 지정된 정렬 방식에 따라 배치하는 기능을 수행합니다. 예를 들어, Align 메서드를 사용하여 버튼을 화면의 중앙에 배치하거나, 텍스트를 오른쪽으로 정렬할 수 있습니다.
+- 만약 정렬을 했는데 같은 라인이 아닌 경우에는 stack 을 사용해서 진행해볼 것.
+- 정렬을 사용할때 위치 조절은 뭐 margin, padding 을 사용할 수 있다.
+
+```
+# Align 메서드 사용 예시
+Align(
+    alignment=Alignment.center,  # 중앙 정렬
+    child=Text("Hello, World!")  # 정렬할 위젯
+)
+```
+
 
 
 --- 

@@ -1,36 +1,57 @@
 // 네이버 지도
-import 'dart:async';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_naver_map/flutter_naver_map.dart';
-import 'package:foodmap/screen/home_screen.dart';
 
 void main() async {
-  await _initialize();
-  runApp(const NaverMapApp());
+  runApp(const MyApp());
 }
 
-// 지도 초기화하기
-Future<void> _initialize() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await NaverMapSdk.instance.initialize(
-      clientId: 'lubj27n2kn', // 클라이언트 ID 설정
-      onAuthFailed: (e) => log("네이버맵 인증오류 : $e", name: "onAuthFailed"));
-}
-
-class NaverMapApp extends StatefulWidget {
-  const NaverMapApp({super.key});
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
 
   @override
-  State<NaverMapApp> createState() => _NaverMapAppState();
+  State<MyApp> createState() => MyMapAppState();
 }
 
-class _NaverMapAppState extends State<NaverMapApp> {
+class MyMapAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: HomeScreen(),
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.blue,
+          centerTitle: true,
+          title: const Text(
+            'Test Title',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ),
+        body: Container(
+          child: Center(
+            child: GestureDetector(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const Text("Dialog Title"),
+                      content: const Text("Dialog Content"),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: const Text("Close"),
+                        )
+                      ],
+                    );
+                  },
+                );
+              },
+              child: const Text("Button Click"),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
