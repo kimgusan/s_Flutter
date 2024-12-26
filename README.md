@@ -1627,6 +1627,7 @@ class UserScreen extends StatelessWidget {
 #### 1. UI(View)
 - 역할: 사용자 인터페이스를 구성하는 부분으로, 사용자와 상호작용합니다. UI는 데이터를 표시하고, 사용자의 입력을 처리하여 상태를 변경하는 역할을 합니다.
 - 상호작용: UI는 Provider를 통해 상태를 구독하고, 상태가 변경될 때 UI를 자동으로 업데이트합니다. Consumer 위젯을 사용하여 필요한 데이터를 구독하고, 데이터가 변경될 때마다 UI를 다시 그립니다.
+  >  Consumer: 데이터구독, UI 업데이트, 성능 최적화를 담당합니다.
 #### 2. Provider
 - 역할: 상태 관리의 중심 역할을 하며, 애플리케이션의 상태를 제공하고 관리합니다. Provider는 ChangeNotifier와 함께 사용되어 상태가 변경될 때 리스너에게 알리는 기능을 제공합니다.
 - 상호작용: UI에서 발생하는 이벤트(예: 버튼 클릭)를 처리하고, 상태를 업데이트합니다. 상태가 변경되면 notifyListeners() 메서드를 호출하여 UI에 알립니다. UI는 Provider를 통해 상태를 가져오고, 필요한 경우 상태를 변경할 수 있습니다.
@@ -1746,6 +1747,114 @@ class MyMapAppState extends State<MyApp> with SingleTickerProviderStateMixin {
 ```
 
 ### 3. get-it 패턴.
+1. 의존성 주입:
+의존성 주입은 객체 간의 의존성을 관리하는 디자인 패턴입니다. 이를 통해 객체를 생성할 때 필요한 의존성을 외부에서 주입하여 코드의 결합도를 낮추고, 테스트 용이성을 높입니다.
+2. get_it 라이브러리:
+get_it는 Flutter 및 Dart에서 의존성 주입을 쉽게 구현할 수 있도록 도와주는 라이브러리입니다. 이 라이브러리를 사용하면 애플리케이션의 전역 상태를 관리하고, 필요한 곳에서 쉽게 객체를 가져올 수 있습니다.
+
+3. 주요 기능 
+- 전역 접근: get_it를 사용하면 애플리케이션의 어디에서나 등록된 객체에 접근할 수 있습니다.
+- 객체 생명주기 관리: 객체의 생명주기를 관리할 수 있으며, 싱글턴(Singleton) 또는 팩토리(Factory) 패턴을 사용할 수 있습니다.
+- 테스트 용이성: 의존성을 주입함으로써 테스트를 쉽게 수행할 수 있습니다. Mock 객체를 주입하여 테스트할 수 있습니다.
+
+### locator: 필요한결 연결해놓고 다 찾는다. 
+- main 호출 이전에 initLocator를 호출해서 작성된 함수들을 호출 할 수 있도록 구성한다.
+
+
+- MyMapAppState 클래스에서 locator<AlbumService>()를 사용하여 AlbumService의 인스턴스를 가져옵니다. 이를 통해 서비스에 접근할 수 있습니다.
+- FutureBuilder를 사용하여 비동기적으로 앨범 데이터를 가져오고, UI를 업데이트합니다.
+
+```
+# main.dart
+void main() async {
+  initLocator();
+  runApp(const MaterialApp(home: MyApp()));
+}
+
+class MyMapAppState extends State<MyApp> with SingleTickerProviderStateMixin {
+  final AlbumService _service = locator<AlbumService>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Get It 예제"),
+      ),
+      body: FutureBuilder(
+        future: _service.fetchAlbums(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            List<Album>? list = snapshot.data;
+            return ListView.builder(
+              itemCount: list?.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  padding: const EdgeInsets.all(15),
+                  child: Text("${list?[index].id}: ${list?[index].title}"),
+                );
+              },
+            );
+          } else if (snapshot.hasError) {
+            return const Center(
+              child: Text("Error"),
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+              ),
+            );
+          }
+        },
+      ),
+    );
+  }
+}
+
+```
+
+- GetIt 인스턴스를 생성하고, initLocator() 함수에서 AlbumService를 등록합니다. registerLazySingleton을 사용하여 서비스의 인스턴스를 지연 생성합니다.
+
+```
+# locator.dart
+import 'package:foodmap/services/album_service.dart';
+import 'package:get_it/get_it.dart';
+
+GetIt locator = GetIt.instance;
+
+initLocator() {
+  locator
+      .registerLazySingleton<AlbumService>(() => AlbumServiceImplementation());
+}
+```
+
+```
+# services/album_service.dart
+import 'dart:convert';
+
+import 'package:foodmap/models/album.dart';
+import 'package:http/http.dart' as http;
+
+abstract class AlbumService {
+  Future<List<Album>> fetchAlbums();
+}
+
+class AlbumServiceImplementation implements AlbumService {
+  @override
+  Future<List<Album>> fetchAlbums() async {
+    final response = await http
+        .get(Uri.parse("https://jsonplaceholder.typicode.com/albums"));
+    final List<Album> result = jsonDecode(response.body)
+        .map<Album>((json) => Album.fromJson(json))
+        .toList();
+
+    return result;
+  }
+}
+
+```
+
+
 
 
 --- 

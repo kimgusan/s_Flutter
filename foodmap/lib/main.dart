@@ -1,20 +1,14 @@
-import 'dart:convert';
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:dio/dio.dart';
-import 'package:foodmap/bloc/album_bloc.dart';
-import 'package:foodmap/models/product.dart';
-import 'package:foodmap/provider/album_provider.dart';
+import 'package:foodmap/locator/locator.dart';
+import 'package:foodmap/models/album.dart';
+
+import 'package:foodmap/services/album_service.dart';
 // import 'package:foodmap/view/album_view_bloc.dart';
-import 'package:foodmap/view/album_view_provider.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+// import 'package:foodmap/view/album_view_provider.dart';
 
 void main() async {
-  runApp(const MyApp());
+  initLocator();
+  runApp(const MaterialApp(home: MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -25,14 +19,40 @@ class MyApp extends StatefulWidget {
 }
 
 class MyMapAppState extends State<MyApp> with SingleTickerProviderStateMixin {
-  // 앨벌블록을 인스턴스로 만들어준다.
+  final AlbumService _service = locator<AlbumService>();
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: ChangeNotifierProvider<AlbumProvider>(
-        create: (context) => AlbumProvider(),
-        child: const AlbumView(),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Get It 예제"),
+      ),
+      body: FutureBuilder(
+        future: _service.fetchAlbums(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            List<Album>? list = snapshot.data;
+            return ListView.builder(
+              itemCount: list?.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  padding: const EdgeInsets.all(15),
+                  child: Text("${list?[index].id}: ${list?[index].title}"),
+                );
+              },
+            );
+          } else if (snapshot.hasError) {
+            return const Center(
+              child: Text("Error"),
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+              ),
+            );
+          }
+        },
       ),
     );
   }

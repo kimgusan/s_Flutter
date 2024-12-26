@@ -47,7 +47,10 @@ dependencies:
   # 외부 데이터를 가져올 수 있는 패키지 (BloC 패턴에서 사용)
   rxdart:
   http:
+  # Provider 패턴에서 사용
   provider:
+  # get-it 패턴에서 사용
+  get_it:
 
 dev_dependencies:
   flutter_test:
