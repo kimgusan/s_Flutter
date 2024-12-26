@@ -841,7 +841,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 # Flutter App Project 
 
-## MediaQeury
+## 😀 MediaQeury
 - MediaQuery는 Flutter에서 화면의 크기와 방향, 그리고 다양한 디바이스의 특성을 가져오는 데 사용되는 위젯입니다. 주로 반응형 디자인을 구현할 때 유용합니다.
 - 반응형 size 구할 때 사용.
 1. 화면크기 (MediaQuery.of(context).size)
@@ -858,7 +858,7 @@ Container(
 )
 ```
 
-## GestureDetector : 터치감지
+## 😀 GestureDetector : 터치감지
 1. TextButton: 텍스트 입력 버튼
 2. GestureDetector 
 - GestureDetector는 Flutter에서 사용자의 제스처(터치, 스와이프, 더블탭 등)를 감지하는 위젯입니다. 이 위젯을 사용하면 다양한 사용자 상호작용을 처리할 수 있습니다.
@@ -883,7 +883,7 @@ GestureDetector(
 )
 ```
 
-## ListView 
+## 😀 ListView 
 - ListView는 Flutter에서 스크롤 가능한 리스트를 생성하는 데 사용되는 위젯입니다. 주로 여러 개의 항목을 나열할 때 유용하며, 사용자가 스크롤하여 더 많은 항목을 볼 수 있도록 합니다.
 - Column은 자식 위젯들을 수직으로 나열하는 위젯이지만, 화면에 표시할 수 있는 공간이 부족할 경우 오버플로우 오류가 발생할 수 있습니다. 반면, ListView는 스크롤 기능을 제공하므로, 항목이 많아도 문제없이 표시할 수 있습니다.
 - ListView는 다양한 방법으로 항목을 생성할 수 있습니다. 예를 들어, ListView.builder를 사용하면 동적으로 항목을 생성할 수 있으며, ListView.separated를 사용하면 항목 사이에 구분선을 추가할 수 있습니다.
@@ -935,7 +935,7 @@ ListView.builder(
 )
 ```
 
-## GridView : 표처럼 나타낼 수 있는 그리드 뷰
+## 😀 GridView : 표처럼 나타낼 수 있는 그리드 뷰
 - GridView는 Flutter에서 항목을 격자 형태로 나열할 수 있는 위젯입니다. 주로 이미지 갤러리, 카드 목록, 또는 그리드 형식으로 데이터를 표시할 때 유용합니다.
 - GridView는 항목을 행(row)과 열(column)로 구성된 격자 형태로 배치합니다. 이를 통해 여러 항목을 동시에 표시할 수 있으며, 사용자가 스크롤하여 더 많은 항목을 볼 수 있습니다.
 
@@ -989,27 +989,641 @@ GridView.builder(
   },
 ),
 ```
-## Scroll 기능 구현
+
+## 😀 Scroll 기능 구현
 1. SingleChildScrollView
 - 자식 위젯의 높이가 부모 위젯(화면)을 초과하면 전체 위젯이 스크롤됩니다.
 - SingleChildScrollView 내부에 특정 위젯(예: Container, Column)의 높이가 고정되면 그 고정된 영역만 스크롤됩니다.  
 부모 위젯의 크기와 관계없이 자식 위젯의 크기에 따라 동작이 달라집니다.
 
 
-## Align 정렬 기능 구현
+## 😀 Align: 정렬 기능 구현
 1. Alignment: 내부 위젯의 정렬 방식을 정의합니다. 일반적으로 수평(horizontal) 및 수직(vertical) 정렬 옵션이 있으며, 각 방향에 대해 왼쪽, 중앙, 오른쪽, 위, 중간, 아래와 같은 정렬 방식이 있습니다.
 2. Align 메서드: 이 메서드는 특정 위젯을 지정된 정렬 방식에 따라 배치하는 기능을 수행합니다. 예를 들어, Align 메서드를 사용하여 버튼을 화면의 중앙에 배치하거나, 텍스트를 오른쪽으로 정렬할 수 있습니다.
 - 만약 정렬을 했는데 같은 라인이 아닌 경우에는 stack 을 사용해서 진행해볼 것.
 - 정렬을 사용할때 위치 조절은 뭐 margin, padding 을 사용할 수 있다.
 
+### Align 메서드 사용 예시
 ```
-# Align 메서드 사용 예시
 Align(
     alignment=Alignment.center,  # 중앙 정렬
     child=Text("Hello, World!")  # 정렬할 위젯
 )
 ```
 
+## 😀 Alert
+1. Alert는 사용자에게 중요한 정보를 전달하거나 확인을 요청하는 대화 상자를 생성하는 기능입니다. showDialog() 메서드를 사용하여 대화 상자를 표시할 수 있으며, 이 메서드 내부에 원하는 내용과 context를 작성해야 합니다. 다음은 이 기능에 대한 설명입니다:
+2. context: context는 위젯 트리에서 현재 위치를 나타내는 객체입니다. 대화 상자를 표시할 때, 이 context를 사용하여 대화 상자가 올바른 위치에 표시되도록 합니다.
+3. Navigator.of(context).pop(): 대화 상자를 닫을 때 사용되는 메서드입니다. Navigator는 Flutter의 내비게이션 시스템을 관리하며, pop() 메서드는 현재 화면(또는 대화 상자)을 스택에서 제거하여 이전 화면으로 돌아가게 합니다
+
+### 사용예시
+```
+showDialog(
+  context: context,
+  builder: (BuildContext context) {
+    return AlertDialog(
+      title: Text("경고"),
+      content: Text("이 작업을 수행하시겠습니까?"),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop(); // 대화 상자 닫기
+          },
+          child: Text("취소"),
+        ),
+        TextButton(
+          onPressed: () {
+            // 확인 작업 수행
+            Navigator.of(context).pop(); // 대화 상자 닫기
+          },
+          child: Text("확인"),
+        ),
+      ],
+    );
+  },
+);
+```
+
+## 😀 이미지 넣기
+1. AssetImage
+- step1. 이미지 파일 로컬 저장 (경로: assets/images/)
+- step2. pubspec.yaml 파일 assets: 부분에 아래 경로 추가
+```
+asset:
+  - assets/images/ 
+```
+- step3. 코드작성
+```
+// assetImage
+Image(
+  image: AssetImage("assets/images/drawer_image.png"),
+  fit: BoxFit.fill, // 이미지 크기 조절
+  width: 100.0,     // 너비 설정
+  height: 100.0,    // 높이 설정
+)
+```
+
+
+2. NetworkImage
+```
+// 네트워크 이미지
+Image(
+  image: NetworkImage("https://example.com/image.png"),
+  fit: BoxFit.fill, // 이미지 크기 조절
+  width: 100.0,     // 너비 설정
+  height: 100.0,    // 높이 설정
+)
+```
+
+## 😀 유튜브 영상 삽입
+- YoutubePlayer 컨트롤러를 이용하여 영상을 가져올 수 있다.
+
+```
+static String youtubeId = '4AoFA19gbLo';
+
+final YoutubePlayerController _con = YoutubePlayerController(
+  initialVideoId: youtubeId,
+  flags: const YoutubePlayerFlags(
+    autoPlay: true,
+    mute: false,
+  ),
+);
+
+@override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.blue,
+          centerTitle: true,
+          title: const Text(
+            'Test Title',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ),
+        body: YoutubePlayer(controller: _con));
+  }
+```
+
+## 😀 Flexible, Expanded 위젯 사용하여 반응형으로 만들기.
+1. Flexible: 이 위젯은 자식 위젯이 주어진 공간 내에서 유연하게 크기를 조정할 수 있도록 합니다. flex 속성을 사용하여 자식 위젯이 차지할 비율을 설정할 수 있습니다. 예를 들어, flex: 1로 설정하면, 해당 위젯은 부모 위젯의 가용 공간을 1의 비율로 차지합니다.
+2. Expanded: 이 위젯은 Flexible과 유사하지만, 자식 위젯이 가능한 모든 공간을 차지하도록 강제합니다. flex 속성을 사용하여 여러 Expanded 위젯 간의 비율을 설정할 수 있습니다. 예를 들어, 같은 라인에 두 개의 Expanded 위젯이 각각 flex: 1로 설정되면, 두 위젯은 동일한 비율로 공간을 나누게 됩니다.
+(fit이 적용되어 있다고 생각할 것)
+
+```
+Flexible(
+  flex: 1,
+  fit: Flexfit.tight,
+  child: Container(
+    color: Colors.blue,
+  ),
+),
+
+Expanded(
+  flex: 1,
+  child: Container(
+    color: Colors.blue,
+  ),
+),
+```
+
+## 😀 Gradient: 그라데이션 적용하기
+1. BoxDecoration: 이 클래스는 위젯의 배경을 꾸미기 위해 사용됩니다. BoxDecoration을 사용하면 색상, 이미지, 테두리, 그림자 등을 설정할 수 있습니다.
+gradient: BoxDecoration의 gradient 속성을 사용하여 그라데이션 효과를 적용할 수 있습니다. Flutter에서는 여러 종류의 그라데이션을 제공하며, 가장 일반적으로 사용되는 것은 LinearGradient, RadialGradient, SweepGradient입니다.
+```
+Container(
+  decoration: BoxDecoration(
+    gradient: LinearGradient(
+      colors: [Colors.blue, Colors.red], // 그라데이션 색상
+      begin: Alignment.topLeft, // 시작 위치
+      end: Alignment.bottomRight, // 끝 위치
+    ),
+  ),
+  child: Center(
+    child: Text(
+      "그라데이션 텍스트",
+      style: TextStyle(color: Colors.white),
+    ),
+  ),
+)
+```
+
+## 😀 버튼 만들기
+1. 자주 사용하는 버튼 3가지가 있지만 버튼을 사용할 지 Gesture를 사용할지는 판단.
+- ElevatedButton
+- TextButton
+- OutlinedButton 
+
+## 😀 다른 화면으로 이동하기
+### 주의사항
+- MaterialApp 사용 시 경로: MaterialApp을 사용하는 경우, 모든 화면(위젯)은 동일한 내비게이션 스택에 있어야 합니다. 즉, Navigator가 관리하는 화면들은 같은 BuildContext 내에 있어야 하며, 이를 통해 화면 간의 전환이 원활하게 이루어질 수 있습니다. 만약 서로 다른 MaterialApp 인스턴스에서 화면을 이동하려고 하면, 내비게이션이 제대로 작동하지 않을 수 있습니다.
+
+### Navigator 사용 
+1. GestureDetector: 사용자의 터치 제스처를 감지하는 위젯입니다. onTap 속성을 사용하여 사용자가 화면을 탭했을 때 실행할 동작을 정의합니다.
+2. Navigator.push: 이 메서드는 새로운 화면을 현재 화면 위에 추가합니다. 첫 번째 인자로 context를 전달하여 현재 위젯 트리의 위치를 지정하고, 두 번째 인자로는 이동할 화면을 정의하는 MaterialPageRoute를 전달합니다.
+3. MaterialPageRoute: 이 클래스는 새로운 화면을 정의하는 데 사용됩니다. builder 속성은 새로운 화면을 생성하는 함수를 정의하며, 이 함수는 새로운 화면을 반환해야 합니다.
+
+```
+child: GestureDetector(
+  onTap: () => Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) => const SecondView(), // 이동할 화면
+    ),
+  ),
+  child: Container(
+    color: Colors.blue,
+    child: Text("다음 화면으로 이동"),
+  ),
+)
+```
+## 😀 Json Data 불러오기 : Future 사용
+1. Future: Dart에서 비동기 작업의 결과를 나타내는 객체입니다. 비동기적으로 데이터를 불러오거나 처리할 때 사용됩니다. Future는 작업이 완료되면 결과를 반환하거나 오류를 발생시킬 수 있습니다.
+2. JSON 데이터 불러오기
+loadJson(): 이 메서드는 JSON 파일을 비동기적으로 불러오는 함수입니다. rootBundle.loadString을 사용하여 JSON 파일을 읽고, json.decode를 통해 JSON 문자열을 Dart 객체로 변환합니다. 최종적으로 data['users']를 반환합니다.
+
+3. 데이터 렌더링
+FutureBuilder: 이 위젯은 Future의 상태에 따라 UI를 업데이트하는 데 사용됩니다. future 속성에 비동기 작업을 전달하고, builder 속성에서 작업의 상태에 따라 다른 위젯을 반환합니다.
+
+
+```
+# 데이터 불러오기
+class MyMapAppState extends State<MyApp> {
+  static Future loadJson() async {
+    final String response =
+        await rootBundle.loadString("lib/data/users/users.json");
+    final data = await json.decode(response);
+    return data['users'];
+  }
+
+  Future userList = loadJson();
+
+#  데이터 렌더링
+body: Container(
+  child: FutureBuilder(
+    future: userList, // 실제 데이터가 들어가는 리스트
+    builder: (context, snapshot) {
+      if (snapshot.hasData) {
+        return ListView.builder(
+          itemCount: snapshot.data.length,
+          itemBuilder: (context, index) {
+            return Container(
+              padding: const EdgeInsets.all(15),
+              child: Text(
+                  "${snapshot.data[index]['id']}: ${snapshot.data[index]['username']}"),
+            );
+          },
+        );
+      } else if (snapshot.hasError) {
+        return const Center(child: Text("Error"));
+      } else {
+        return const Center(
+          child: CircularProgressIndicator(strokeWidth: 2),
+        );
+      }
+    },
+  ),
+),
+```
+
+## 😀 디스크에 간단한 데이터 저장 및 불러오기 (shared preferences 라이브러리 사용)
+1. 라이브러리 추가 (pubspec.yaml 파일에 shared_preferences 라이브러리 등록.)
+2. 데이터 저장하기
+데이터를 저장하기 위해 SharedPreferences 인스턴스를 생성하고, set 메서드를 사용하여 데이터를 저장합니다.
+
+3. tip. TextEditingController는 텍스트 필드의 현재 값을 읽고 수정하는 데 사용됩니다. 사용자가 입력한 텍스트를 가져오거나, 텍스트 필드의 내용을 프로그래밍적으로 설정할 수 있습니다.
+```
+class MyMapAppState extends State<MyApp> {
+  // 라이브러리 생성
+  late SharedPreferences _prefs;
+  String _username = "";
+  final TextEditingController _usernameController = TextEditingController();
+
+  // 데이터 초기화
+  @override
+  void initState() {
+    super.initState();
+    _getUsername();
+  }
+
+  // 데이터 저장
+  _saveUsername() {
+    setState(() {
+      _username = _usernameController.text;
+      _prefs.setString("currentUsername", _username);
+    });
+  }
+  // 데이터 호출
+  _getUsername() async {
+    _prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _username = _prefs.getString("currentUsername") ?? "";
+    });
+  }
+
+  // UI 구현
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.blue,
+        centerTitle: true,
+        title: const Text(
+          'Test Title',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+      ),
+      body: Container(
+        child: Column(
+          children: [
+            const Padding(padding: EdgeInsets.all(10)),
+            Text("현재 사용자 이름 $_username"),
+            Container(
+              child: TextField(
+                controller: _usernameController,
+                textAlign: TextAlign.left,
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Input your username',
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: _saveUsername,
+              child: const Text("저장"),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+
+## 😀 Bottom Navigation Bar, setState, stateful widget 
+- SingleTickerProviderStateMinin 을 사용해서 Bottom Navigation Bar를 구성한다.
+- Bottom Navigation Bar는 모바일 애플리케이션에서 자주 사용되는 UI 요소로, 사용자가 주요 화면 간에 쉽게 전환할 수 있도록 도와줍니다.
+- 일반적으로 화면 하단에 위치하며, 여러 개의 아이콘과 텍스트 레이블을 포함하여 각 아이콘이 다른 화면을 나타냅니다.
+- 사용자는 아이콘을 탭하여 해당 화면으로 이동할 수 있습니다.
+
+```
+class MyMapAppState extends State<MyApp> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+  int _selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+    _tabController.addListener(() {
+      setState(() {
+        _selectedIndex = _tabController.index;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.blue,
+        centerTitle: true,
+        title: const Text(
+          'Test Title',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+      ),
+      body: _selectedIndex == 0
+          ? TabContainer(context, Colors.indigo, "Friends Tab")
+          : _selectedIndex == 1
+              ? TabContainer(context, Colors.amber[600] as Color, "Chat Tab")
+              : TabContainer(context, Colors.blueGrey, "Setting Tab"),
+      bottomNavigationBar: SizedBox(
+        height: 90,
+        child: TabBar(
+          controller: _tabController,
+          labelColor: Colors.black,
+          tabs: const [
+            Tab(
+              icon: Icon(Icons.person),
+              text: "Friends",
+            ),
+            Tab(
+              icon: Icon(Icons.chat),
+              text: "Chat",
+            ),
+            Tab(
+              icon: Icon(Icons.settings),
+              text: "Setting",
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget TabContainer(BuildContext con, Color tabColor, String tabText) {
+    return Container(
+      width: MediaQuery.of(con).size.width,
+      height: MediaQuery.of(con).size.height,
+      color: tabColor,
+      child: Center(
+        child: Text(
+          tabText,
+          style: const TextStyle(
+            fontSize: 30,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+## 😀 Refresh Indicator: 아래로 스와이프하여 새로고침
+1. RefreshIndicator
+기본 구조:
+RefreshIndicator는 자식 위젯으로 스크롤 가능한 위젯(예: ListView, GridView)을 감싸야 합니다. 사용자가 스와이프를 시작하면 RefreshIndicator가 활성화됩니다.
+2. onRefresh 콜백:
+onRefresh 속성은 사용자가 새로 고침을 요청할 때 호출되는 비동기 함수입니다. 이 함수 내에서 데이터를 새로 고치는 로직을 구현합니다. 이 함수는 Future<void>를 반환해야 합니다.
+3. 새로 고침 애니메이션:
+사용자가 아래로 스와이프하면, RefreshIndicator는 로딩 애니메이션을 표시합니다. 이 애니메이션은 사용자가 새로 고침을 기다리는 동안 시각적인 피드백을 제공합니다.
+
+### 해당 부분은 외부에서 데이터를 가져와서 호출하는 데이터로 일반 구조보다는 복잡할 수 있습니다. 
+```
+class MyMapAppState extends State<MyApp> with SingleTickerProviderStateMixin {
+  Future<List<Product>>? productList;
+  Dio dio = Dio();
+
+  @override
+  void initState() {
+    super.initState();
+    productList = getProductData();
+  }
+
+  // 더미데이터 불러오는 함수
+  Future<List<Product>> getProductData() async {
+    late List<Product> products;
+    try {
+      var response = await dio.get("https://dummyjson.com/products");
+      products = response.data['products']
+          .map<Product>((json) => Product.fromJson(json))
+          .toList();
+    } catch (e) {
+      print(e);
+    }
+    return products;
+  }
+
+  // 새로고침 초기화 함수.
+  Future<void> refreshData() async {
+    productList = getProductData();
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: RefreshIndicator(
+        // 새로고침 콜백
+        onRefresh: () => refreshData(),
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: FutureBuilder<List<Product>>(
+            future: productList,
+            builder: (BuildContext con, AsyncSnapshot snapshot) {
+              if (!snapshot.hasData) {
+                return const Center(
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                  ),
+                );
+              } else {
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    var data = snapshot.data[index];
+                    return Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 1, color: Colors.black26),
+                      ),
+                      child: Text("${data.title}\n(${data.desc})"),
+                    );
+                  },
+                );
+              }
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+## 😀 상태관리 (BLoC 패턴, Provider 패턴) //  github 정리.
+### 1. BloC 패턴 
+- BLoc 의 개념으로는 UI Screen, BLOC(Presenter, ViewModel), Data Layer(Repository(Data Handler), Provider(Data Provider)) 가 존재한다.
+- “화면(UI) <—> (Stream/Sink) <—> BLoC <—> Repository/Service” 식의 흐름을 가집니다.
+- ReactiveX(리액티브 프로그래밍 개념에 기반을 둔 라이브러리)를 Dart 언어에서 사용할 수 있게 만든 라이브러리입니다. 간단히 말해, **“스트림(stream)과 반응형 프로그래밍(Reactive Programming)을 더 강력하고 유연하게 쓸 수 있도록 하는 도구”**
+- StreamBuilder: StreamBuilder는 비동기 데이터 스트림을 처리하고 UI를 업데이트하는 데 사용되는 Flutter 위젯입니다.
+- sink는 StreamController의 속성으로, 데이터를 스트림에 추가하는 데 사용됩니다.
+
+#### 1. Provider (Data Provider)
+- 데이터 제공 및 수집, 데이터 처리
+#### 2. Repository (Data Handler)
+- Data Provider에서 제공 받은 데이터를 필터링 등 변형하여 BLOC에게 데이터를 제공
+#### 3. BLOC (Presenter, ViewModel)
+- Business Logic을 담은 패키지로, 화면에 적용시킬 수 있도록 stream을 통해 add하여 화면에 반영할 수 있도록 함
+#### 4. UI Screen (View)
+initState로 초기 데이터를 먼저 받아오고 추후 stream을 통해 계속 데이터를 갱신해서 가져올 수 있음
+
+- models: 데이터 생성자
+- data_provider: 데이터 호출 함수 생성 (ex. api)
+- repository: 데이터 가공 (ex. api 에서 생성한 함수 호출 및 데이터를 가공, 저장)
+- BLoC: 데이터를 비동기로 가져온 뒤 스트림(Stream) 을 통해 UI 로 전달하는 구조를 가지고 있다.  
+- view: 화면
+```
+모델: User 클래스를 정의하여 사용자 데이터를 표현합니다.
+데이터 제공자: UserProvider 클래스에서 API를 호출하여 사용자 데이터를 가져옵니다.
+리포지토리: UserRepository 클래스에서 데이터 제공자로부터 데이터를 가져오고, 필요한 경우 가공합니다.
+BLoC: UserBloc 클래스에서 비즈니스 로직을 처리하고, 데이터를 스트림을 통해 UI에 전달합니다.
+UI 스크린: UserScreen 클래스에서 BLoC를 사용하여 사용자 목록을 표시합니다.
+```
+
+#### 예시
+1. 모델 (models/user.dart)
+```
+class User {
+  final String name;
+
+  User(this.name);
+
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(json['name']);
+  }
+}
+```
+2. 데이터 제공자 (data_provider/user_provider.dart)
+```
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import '../models/user.dart';
+
+class UserProvider {
+  Future<List<User>> fetchUsers() async {
+    final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/users'));
+
+    if (response.statusCode == 200) {
+      List<dynamic> jsonResponse = json.decode(response.body);
+      return jsonResponse.map((user) => User.fromJson(user)).toList();
+    } else {
+      throw Exception('Failed to load users');
+    }
+  }
+}
+```
+3. 리포지토리 (repository/user_repository.dart)
+```
+import '../data_provider/user_provider.dart';
+import '../models/user.dart';
+
+class UserRepository {
+  final UserProvider userProvider;
+
+  UserRepository(this.userProvider);
+
+  Future<List<User>> getUsers() async {
+    return await userProvider.fetchUsers();
+  }
+}
+```
+
+4. BLoC (bloc/user_bloc.dart)
+```
+import 'dart:async';
+import '../models/user.dart';
+import '../repository/user_repository.dart';
+
+class UserBloc {
+  final UserRepository userRepository;
+  final StreamController<List<User>> _userController = StreamController<List<User>>();
+
+  Stream<List<User>> get users => _userController.stream;
+
+  UserBloc(this.userRepository);
+
+  void fetchUsers() async {
+    try {
+      final users = await userRepository.getUsers();
+      _userController.sink.add(users);
+    } catch (e) {
+      _userController.sink.addError('Failed to fetch users');
+    }
+  }
+
+  void dispose() {
+    _userController.close();
+  }
+}
+```
+
+5. UI 스크린 (ui/user_screen.dart) : view
+```
+import 'package:flutter/material.dart';
+import '../bloc/user_bloc.dart';
+import '../repository/user_repository.dart';
+import '../data_provider/user_provider.dart';
+
+class UserScreen extends StatelessWidget {
+  final UserBloc userBloc = UserBloc(UserRepository(UserProvider()));
+
+  @override
+  void initState() {
+    userBloc.fetchUsers(); // 초기 데이터 가져오기
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('User List')),
+      body: StreamBuilder<List<User>>(
+        stream: userBloc.users,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text(snapshot.error.toString()));
+          } else {
+            final users = snapshot.data!;
+            return ListView.builder(
+              itemCount: users.length,
+              itemBuilder: (context, index) {
+                return ListTile(title: Text(users[index].name));
+              },
+            );
+          }
+        },
+      ),
+    );
+  }
+}
+```
+### 2. Provider 패턴
 
 
 --- 
@@ -1046,3 +1660,6 @@ AppBar의 중앙에 위치 (centerTitle 속성으로 조절 가능)
 
 2. kakao_map_flutter 사용하려고 했을 때 빌드 안되는 증상 발생
 - :location 항목에 namespace를 추가하라는 문구 발생 => 실제로 location 모듈을 사용하지 않으나 명시히라라는 부분 확인
+
+---
+tip. 싱글톤 패턴: 생성자가 여러 차례 호출되더라도 실제로 생성되는 객체는 하나이고, 최초 생성 이후에 호출된 생성자는 최초의 생성가자 생성한 객체를 리턴한다.

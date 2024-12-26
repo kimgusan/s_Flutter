@@ -1,8 +1,17 @@
-// 네이버 지도
+import 'dart:convert';
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:dio/dio.dart';
+import 'package:foodmap/bloc/album_bloc.dart';
+import 'package:foodmap/models/product.dart';
+import 'package:foodmap/view/album_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 void main() async {
-  runApp(const MyApp());
+  runApp(const AlbumView());
 }
 
 class MyApp extends StatefulWidget {
@@ -12,46 +21,23 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => MyMapAppState();
 }
 
-class MyMapAppState extends State<MyApp> {
+class MyMapAppState extends State<MyApp> with SingleTickerProviderStateMixin {
+  // 앨벌블록을 인스턴스로 만들어준다.
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.blue,
-          centerTitle: true,
-          title: const Text(
-            'Test Title',
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-        ),
-        body: Container(
-          child: Center(
-            child: GestureDetector(
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: const Text("Dialog Title"),
-                      content: const Text("Dialog Content"),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          child: const Text("Close"),
-                        )
-                      ],
-                    );
-                  },
-                );
-              },
-              child: const Text("Button Click"),
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.blue,
+        centerTitle: true,
+        title: const Text(
+          'Bloc 패턴 예제',
+          style: TextStyle(
+            color: Colors.white,
           ),
         ),
       ),
+      body: Container(),
     );
   }
 }

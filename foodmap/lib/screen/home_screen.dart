@@ -97,65 +97,71 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
           // 지도위에 표시할 버튼
-          Positioned(
+          const Positioned(
             right: 20,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Column(
                   children: [
-                    Container(
-                      alignment: Alignment.center,
-                      width: 70,
-                      height: 50,
-                      margin: const EdgeInsets.only(top: 20),
-                      // padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: Colors.amber,
-                          width: 4,
-                        ),
-                      ),
-                      child: const Text(
-                        '단지',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                        ),
-                      ),
+                    SizedBox(
+                      height: 20,
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      alignment: Alignment.center,
-                      width: 70,
-                      height: 50,
-                      // padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: Colors.blue,
-                          width: 4,
-                        ),
-                      ),
-                      child: const Text(
-                        '평수',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
+                    mapSelectSction(title: "단지"),
+                    mapSelectSction(title: "오피"),
+                    mapSelectSction(title: "중개"),
+                    mapSelectSction(title: "호재"),
+                    mapSelectSction(title: "학군"),
+                    mapSelectSction(title: "노선만\n보기"),
+                    mapSelectSction(title: "지도"),
+                    mapSelectSction(title: "거리"),
+                    mapSelectSction(title: "면적"),
                   ],
                 ),
               ],
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+// 차후 해당 위젯은 버튼으로 바뀔 수도 있음
+class mapSelectSction extends StatelessWidget {
+  final String title;
+
+  const mapSelectSction({
+    super.key,
+    required this.title,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(right: 5, bottom: 7),
+      alignment: Alignment.center,
+      constraints: const BoxConstraints(
+        minWidth: 70,
+        minHeight: 50,
+      ),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: Colors.blue,
+          width: 2,
+        ),
+      ),
+      child: Text(
+        title,
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+          color: Colors.black,
+          fontSize: 18,
+        ),
+        maxLines: 5,
+        overflow: TextOverflow.visible,
       ),
     );
   }
