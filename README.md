@@ -1475,7 +1475,7 @@ class MyMapAppState extends State<MyApp> with SingleTickerProviderStateMixin {
 }
 ```
 
-## 😀 상태관리 (BLoC 패턴, Provider 패턴) //  github 정리.
+## 😀 상태관리 (BLoC 패턴, Provider 패턴, get-it,Reverpod, getX) //  github 정리.
 ### 1. BloC 패턴 
 - BLoc 의 개념으로는 UI Screen, BLOC(Presenter, ViewModel), Data Layer(Repository(Data Handler), Provider(Data Provider)) 가 존재한다.
 - “화면(UI) <—> (Stream/Sink) <—> BLoC <—> Repository/Service” 식의 흐름을 가집니다.
