@@ -6,12 +6,15 @@ import 'package:flutter/services.dart';
 import 'package:dio/dio.dart';
 import 'package:foodmap/bloc/album_bloc.dart';
 import 'package:foodmap/models/product.dart';
-import 'package:foodmap/view/album_view.dart';
+import 'package:foodmap/provider/album_provider.dart';
+// import 'package:foodmap/view/album_view_bloc.dart';
+import 'package:foodmap/view/album_view_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 void main() async {
-  runApp(const AlbumView());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -26,18 +29,11 @@ class MyMapAppState extends State<MyApp> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue,
-        centerTitle: true,
-        title: const Text(
-          'Bloc 패턴 예제',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
+    return MaterialApp(
+      home: ChangeNotifierProvider<AlbumProvider>(
+        create: (context) => AlbumProvider(),
+        child: const AlbumView(),
       ),
-      body: Container(),
     );
   }
 }

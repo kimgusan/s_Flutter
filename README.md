@@ -1624,6 +1624,128 @@ class UserScreen extends StatelessWidget {
 }
 ```
 ### 2. Provider 패턴
+#### 1. UI(View)
+- 역할: 사용자 인터페이스를 구성하는 부분으로, 사용자와 상호작용합니다. UI는 데이터를 표시하고, 사용자의 입력을 처리하여 상태를 변경하는 역할을 합니다.
+- 상호작용: UI는 Provider를 통해 상태를 구독하고, 상태가 변경될 때 UI를 자동으로 업데이트합니다. Consumer 위젯을 사용하여 필요한 데이터를 구독하고, 데이터가 변경될 때마다 UI를 다시 그립니다.
+#### 2. Provider
+- 역할: 상태 관리의 중심 역할을 하며, 애플리케이션의 상태를 제공하고 관리합니다. Provider는 ChangeNotifier와 함께 사용되어 상태가 변경될 때 리스너에게 알리는 기능을 제공합니다.
+- 상호작용: UI에서 발생하는 이벤트(예: 버튼 클릭)를 처리하고, 상태를 업데이트합니다. 상태가 변경되면 notifyListeners() 메서드를 호출하여 UI에 알립니다. UI는 Provider를 통해 상태를 가져오고, 필요한 경우 상태를 변경할 수 있습니다.
+#### 3. Model
+- 역할: 애플리케이션의 데이터 구조를 정의하는 부분입니다. 모델은 데이터의 속성과 동작을 정의하며, 비즈니스 로직을 포함할 수 있습니다.
+- 상호작용: Provider는 모델을 사용하여 데이터를 가져오고, 필요한 경우 데이터를 가공하여 UI에 제공합니다. 모델은 데이터의 상태를 관리하고, 데이터와 관련된 비즈니스 로직을 처리합니다.
+#### 4. tip. ChangeNotifierProvider
+ChangeNotifierProvider는 ChangeNotifier를 상속받은 클래스를 제공하는 위젯입니다. 이 위젯은 상태를 관리하는 객체를 생성하고, 이를 하위 위젯에서 사용할 수 있도록 합니다. (기존 Provider 에서 사용.)
+
+#### Provider 형태 예시
+```
+provider/album_providere 
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:foodmap/models/album.dart';
+import 'package:http/http.dart' as http;
+
+class AlbumProvider with ChangeNotifier {
+  final List<Album> _albumList = List.empty(growable: true);
+
+  List<Album> getAlbumList() {
+    _fetchAlbum();
+    return _albumList;
+  }
+
+  void _fetchAlbum() async {
+    final response = await http
+        .get(Uri.parse("https://jsonplaceholder.typicode.com/albums"));
+    final List<Album> result = jsonDecode(response.body)
+        .map<Album>((json) => Album.fromJson(json))
+        .toList();
+    // clear 작업이 들어가는 이유는 새로고침이나 해당 부분이 남이있을 수 있기 때문
+    _albumList.clear();
+    _albumList.addAll(result);
+    notifyListeners();
+  }
+}
+```
+
+```
+# view/album_view_provider
+import 'package:flutter/material.dart';
+import 'package:foodmap/models/album.dart';
+import 'package:foodmap/provider/album_provider.dart';
+import 'package:provider/provider.dart';
+
+class AlbumView extends StatefulWidget {
+  const AlbumView({super.key});
+
+  @override
+  State<AlbumView> createState() => _AlbumViewState();
+}
+
+class _AlbumViewState extends State<AlbumView> {
+  late List<Album> albumList;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.red[50],
+          centerTitle: true,
+          title: const Text(
+            "Provider 패턴 실습",
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+        body: Consumer<AlbumProvider>(
+          builder: (context, provider, child) {
+            albumList = provider.getAlbumList();
+            return ListView.builder(
+              itemCount: albumList.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  padding: const EdgeInsets.all(15),
+                  child:
+                      Text("${albumList[index].id}: ${albumList[index].title}"),
+                );
+              },
+            );
+          },
+        ));
+  }
+}
+```
+
+```
+main.dart
+void main() async {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => MyMapAppState();
+}
+
+class MyMapAppState extends State<MyApp> with SingleTickerProviderStateMixin {
+  // 앨벌블록을 인스턴스로 만들어준다.
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: ChangeNotifierProvider<AlbumProvider>(
+        create: (context) => AlbumProvider(),
+        child: const AlbumView(),
+      ),
+    );
+  }
+}
+
+```
+
+### 3. get-it 패턴.
 
 
 --- 
