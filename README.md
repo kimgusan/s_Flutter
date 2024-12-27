@@ -1918,6 +1918,27 @@ class SimpleCounter extends ConsumerWidget {
 - 직접 update 메소드를 통해 업데이트를 진행.
 
 ### 2. Reactive State Manager
+1. 비동기 처리
+- 비동기 처리: 비동기 처리는 작업이 완료될 때까지 프로그램의 실행을 멈추지 않고, 다른 작업을 계속 수행할 수 있게 해주는 프로그래밍 방식입니다. Flutter에서는 비동기 작업(예: API 호출, 데이터베이스 쿼리 등)을 수행할 때 Future와 async/await를 사용합니다.
+- 상태 관리: 비동기 작업이 완료되면 상태가 변경되고, 이 상태 변화에 따라 UI를 업데이트합니다. Reactive State Manager는 이러한 상태 변화를 감지하고, UI를 자동으로 다시 그립니다.
+
+2. Obx와 GetX
+- Obx: Obx는 GetX 라이브러리에서 제공하는 위젯으로, Rx 변수를 구독하고 해당 변수가 변경될 때 UI를 자동으로 업데이트합니다.
+- Obx 블록 내에서 Rx 변수를 참조하면, 해당 변수가 변경될 때마다 UI가 자동으로 다시 그려집니다.
+```
+ Obx(() => Text("Count: ${controller.count}")); // count가 변경될 때마다 UI 업데이트
+```
+
+3. GetX:
+- GetX는 GetXController의 상태를 구독하고, 해당 상태가 변경될 때 UI를 업데이트하는 데 사용됩니다.
+- GetX 위젯 내에서 Get.find<Controller>()를 통해 컨트롤러의 상태를 가져오고, builder 콜백에서 UI를 구성합니다.
+```
+GetX<CounterController>(
+  builder: (_) => Text("Count: ${controller.count}"), // 상태가 변경될 때 UI 업데이트
+);
+```
+
+
 #### 1번 예제
 ```
 # main.dart
@@ -1988,6 +2009,117 @@ class CountController extends GetxController {
     update();
   }
 }
+```
+#### 2번 예제
+```
+# main.dart
+import 'package:flutter/material.dart';
+import 'package:foodmap/studentController.dart';
+import 'package:get/get.dart';
+
+void main() async {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  MyApp({super.key});
+
+  final StudentController _con = Get.put(StudentController());
+
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      title: "GetX Demo",
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text("GetX Example"),
+          centerTitle: true,
+          backgroundColor: Colors.blue,
+        ),
+        body: ListView.builder(
+          itemCount: _con.studentList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+              margin: const EdgeInsets.all(15),
+              padding: const EdgeInsets.all(15),
+              child: Column(
+                children: [
+                  GetX<StudentController>(
+                    builder: (_) => Text(
+                      "ID: ${_con.studentList[index]().studentID}, name: ${_con.studentList[index]().studentName}, grade: ${_con.studentList[index]().studentGrade}",
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButton(
+                        onPressed: () => _con.updateStudentName(
+                            _con.newStudentNames[index], index),
+                        child: const Text("이름 변경"),
+                      ),
+                      TextButton(
+                        onPressed: () => _con.updateStudentGrade(
+                            _con.newStudentGrades[index], index),
+                        child: const Text("성적 변경"),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+```
+
+```
+# studentModel.dart
+class Student {
+  int studentID;
+  String studentName;
+  String studentGrade;
+
+  Student({
+    this.studentID = 0,
+    this.studentName = "",
+    this.studentGrade = '',
+  });
+}
+
+# studentModelController.dart
+import 'package:get/get.dart';
+import 'package:foodmap/models/studentModel.dart';
+
+class StudentController extends GetxController {
+  RxList<Rx<Student>> studentList = [
+    Student(studentID: 1, studentName: "Andrew", studentGrade: "A").obs,
+    Student(studentID: 2, studentName: "Brian", studentGrade: "B").obs,
+    Student(studentID: 3, studentName: "Catherine", studentGrade: "C").obs,
+  ].obs;
+
+  List<String> newStudentNames = ["Andrew2", "Brian2", "Catherine2"];
+  List<String> newStudentGrades = ["A+", "B+", "C+"];
+
+  void updateStudentName(String name, int index) {
+    studentList[index].update((val) {
+      val?.studentName = name;
+    });
+  }
+
+  void updateStudentGrade(String grade, int index) {
+    studentList[index].update((val) {
+      val?.studentGrade = grade;
+    });
+  }
+}
+
 
 ```
 --- 
