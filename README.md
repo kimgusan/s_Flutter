@@ -2260,6 +2260,324 @@ class _MyAppState extends State<MyApp> {
 ```
 
 ## 😀 WebView_flutter 구현하기
+- webview_flutter:
+- webview_flutter_android:
+- webview_flutter_wkwebview:
+- 위의 라이브러리를 활용하여 웹뷰를 구현한다.
+- 웹뷰 구현 시 웹 화면이 모바일 사이즈에 맞게 제작되어 있거나 반응형 작업이 되어 있어야한다.
+
+### 예시파일
+```
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_android/webview_flutter_android.dart';
+import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
+
+void main() async {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late final WebViewController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+
+    late final PlatformWebViewControllerCreationParams params;
+
+    if (WebViewPlatform.instance is WebKitWebViewPlatform) {
+      params = WebKitWebViewControllerCreationParams(
+        allowsInlineMediaPlayback: true,
+        mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{},
+      );
+    } else {
+      params = const PlatformWebViewControllerCreationParams();
+    }
+
+    final WebViewController controller =
+        WebViewController.fromPlatformCreationParams(params);
+
+    controller
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(const Color(0x00000000))
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (int progress) {
+            debugPrint('WebView is loading (progress : $progress%)');
+          },
+          onPageStarted: (String url) {
+            debugPrint('Page started loading: $url');
+          },
+          onPageFinished: (String url) {
+            debugPrint('Page finished loading: $url');
+          },
+          onWebResourceError: (WebResourceError error) {
+            debugPrint('''
+                        Page resource error:
+                          code: ${error.errorCode}
+                          description: ${error.description}
+                          errorType: ${error.errorType}
+                          isForMainFrame: ${error.isForMainFrame}
+                    ''');
+          },
+          onNavigationRequest: (NavigationRequest request) {
+            debugPrint('allowing navigation to ${request.url}');
+
+            return NavigationDecision.navigate;
+          },
+        ),
+      )
+      ..addJavaScriptChannel(
+        'Toaster',
+        onMessageReceived: (JavaScriptMessage message) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(message.message)),
+          );
+        },
+      )
+      // ..loadRequest(Uri.parse('https://flutter.dev/'));
+      ..loadRequest(Uri.parse('https://dev.returnplus.kr/'));
+
+    if (controller.platform is AndroidWebViewController) {
+      AndroidWebViewController.enableDebugging(true);
+
+      (controller.platform as AndroidWebViewController)
+          .setMediaPlaybackRequiresUserGesture(false);
+    }
+
+    _controller = controller;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      title: "GetX Demo",
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(
+        body: SafeArea(
+          bottom: false,
+          child: WebViewWidget(controller: _controller),
+        ),
+      ),
+    );
+  }
+}
+
+```
+
+## 😀 Form - 양식 제출
+1. initalRoute: 기본 메인 페이지 루트 
+2. GlobalKey
+- key는 Flutter에서 위젯의 고유성을 식별하고 상태를 유지하는 데 중요한 역할을 합니다. GlobalKey를 사용하여 Form 위젯의 상태를 관리하는 것은 사용자 입력을 검증하고 저장하는 데 필수적입니다. key를 적절히 사용하면 Flutter 애플리케이션의 성능과 안정성을 높일 수 있습니다. 추가적인 질문이 있으면 언제든지 말씀해 주세
+3. Navigator (push, pop, pushReplacement, pushAndRemoveUnitl)
+####  Route의 종류
+-  MaterialPageRoute, CupertinoPageRoute, Custom Route
+```
+#main.dart
+import 'package:flutter/material.dart';
+import 'package:foodmap/models/user.dart';
+import 'package:foodmap/successPage.dart';
+
+void main() async {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: "Flutter",
+      initialRoute: '/',
+      routes: {
+        "/": (context) => const HomePage(),
+        '/success': (context) => const SuccessPage()
+      },
+    );
+  }
+}
+
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final _key = GlobalKey<FormState>();
+  late String _username, _email;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.blue,
+        title: const Text(
+          "context",
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        centerTitle: true,
+      ),
+      body: Container(
+        padding: const EdgeInsets.all(15),
+        child: Form(
+          key: _key,
+          child: Column(
+            children: [
+              usernameInput(),
+              const SizedBox(height: 15),
+              emailInput(),
+              const SizedBox(height: 15),
+              submitButton(),
+              const SizedBox(height: 15),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget usernameInput() {
+    return TextFormField(
+      autofocus: true,
+      validator: (val) {
+        if (val == null || val.isEmpty) {
+          return '필수 입력 항목입니다.'; // 에러 메시지 반환
+        } else {
+          return null;
+        }
+      },
+      onSaved: (username) => _username = username!,
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        hintText: "Input your name.,",
+        labelText: "Username",
+        labelStyle: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
+  Widget emailInput() {
+    return TextFormField(
+      autofocus: true,
+      validator: (val) {
+        if (val == null || val.isEmpty) {
+          return '필수 입력 항목입니다.'; // 에러 메시지 반환
+        } else {
+          return null;
+        }
+      },
+      onSaved: (email) => _email = email!,
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        hintText: "Input your email address.,",
+        labelText: "email address",
+        labelStyle: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
+  Widget submitButton() {
+    return ElevatedButton(
+        onPressed: () {
+          if (_key.currentState!.validate()) {
+            _key.currentState!.save();
+            Navigator.pushNamed(context, '/success',
+                arguments: User(username: _username, email: _email));
+          }
+        },
+        child: Container(
+          padding: const EdgeInsets.all(15),
+          child: const Text(
+            "제출",
+            style: TextStyle(fontSize: 18),
+          ),
+        ));
+  }
+}
+
+```
+
+```
+# successPage.dart
+import 'package:flutter/material.dart';
+import 'package:foodmap/models/user.dart';
+
+class SuccessPage extends StatefulWidget {
+  const SuccessPage({super.key});
+
+  @override
+  State<SuccessPage> createState() => _SuccessPageState();
+}
+
+class _SuccessPageState extends State<SuccessPage> {
+  @override
+  Widget build(BuildContext context) {
+    final User args = ModalRoute.of(context)!.settings.arguments as User;
+
+    return Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () => Navigator.of(context).pop(),
+            icon: const Icon(Icons.arrow_back_ios),
+          ),
+          title: const Text("Text App"),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text("성공적으로 제출되었습니다."),
+              Text("name ${args.username}."),
+              Text("Email ${args.email}."),
+            ],
+          ),
+        ));
+  }
+}
+```
+
+## 😀 MVVM (Model View ModelView) 패턴 적용
+1. MVC(Model View Controller)
+- Controller에서 사용자의 입력 -> Model 업데이트 -> View는 Model를 통해 View를 업데이트- 단순하지만 View와 Model이 서로 의존성이 높음
+
+2. MVP(Model View Presenter)
+- View에서 사용자의 입력 -> Presenter에서 Model 업데이트 -> Presenter를 통해 View 업데이트- View와 Model의 의존성은 분리되어 있으나 View와 Presenter의 의존성이 높아짐
+
+3. MVVM (Model View ModelView)
+- View에서 사용자의 입력을 ViewModel로 전달 -> ViewModel에서 Model로 데이터 요청 및 처리 -> View는 ViewModel를 Provider나 Stream 등을 통하여 구독하거나 데이터 상태 관리를 통해 View를 업데이트- View와 Model의 의존성이 없음- View와 ViewModel은 서로 양방향 소통이 아니므로 여러 View가 ViewModel 하나를 참조할 수 있음
+
+### 구조
+1. View: 사용자에게 보여지는 영역
+2. ViewModel: View의 상태를 관리하고 View의 비즈니스 로직을 담당
+3. Repository: 데이터 저장소라는 뜻으로 DataLayer인 DataSource에 접근
+4. DataSource: 데이터를 가져오는 영역
+5. Model:데이터 설계
+
+
+
+## 😀
 
 
 --- 
