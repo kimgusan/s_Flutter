@@ -51,6 +51,8 @@ dependencies:
   provider:
   # get-it 패턴에서 사용
   get_it:
+  # Riverpod 패턴에서 사용
+  flutter_riverpod:
 
 dev_dependencies:
   flutter_test:

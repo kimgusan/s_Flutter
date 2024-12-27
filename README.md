@@ -1475,7 +1475,8 @@ class MyMapAppState extends State<MyApp> with SingleTickerProviderStateMixin {
 }
 ```
 
-## 😀 상태관리 (BLoC 패턴, Provider 패턴, get-it,Reverpod, getX) //  github 정리.
+## 😀 상태관리 (BLoC 패턴, Provider 패턴, get-it, Reverpod, getX) //  github 정리.
+(참고: https://cherrie.hashnode.dev/flutter-getx-provider-bloc-riverpod)
 ### 1. BloC 패턴 
 - BLoc 의 개념으로는 UI Screen, BLOC(Presenter, ViewModel), Data Layer(Repository(Data Handler), Provider(Data Provider)) 가 존재한다.
 - “화면(UI) <—> (Stream/Sink) <—> BLoC <—> Repository/Service” 식의 흐름을 가집니다.
@@ -1757,7 +1758,7 @@ get_it는 Flutter 및 Dart에서 의존성 주입을 쉽게 구현할 수 있도
 - 객체 생명주기 관리: 객체의 생명주기를 관리할 수 있으며, 싱글턴(Singleton) 또는 팩토리(Factory) 패턴을 사용할 수 있습니다.
 - 테스트 용이성: 의존성을 주입함으로써 테스트를 쉽게 수행할 수 있습니다. Mock 객체를 주입하여 테스트할 수 있습니다.
 
-### locator: 필요한결 연결해놓고 다 찾는다. 
+#### locator: 필요한결 연결해놓고 다 찾는다. 
 - main 호출 이전에 initLocator를 호출해서 작성된 함수들을 호출 할 수 있도록 구성한다.
 
 
@@ -1854,7 +1855,64 @@ class AlbumServiceImplementation implements AlbumService {
 
 ```
 
+## 😃 4. Riverpod 패턴.
+- Riverpod는 Provider 패키지를 기반으로 구축된 라이브러리이다. Provider의 주요 단점을 해결하고 보다 유연하고 안전한 상태 관리를 제공한다. 또한, 반응형 패러다임을 제공하며, 개발 중 발생할 수 있는 오류를 런타임이 아닌 컴파일 타임에 잡아낼 수 있다.
+다음과 같은 핵심 개념을 기반으로 한다:
 
+### 특징:
+- Providers: 데이터 소스를 선언한다.
+- Consumers: Provider를 읽고 변경 사항에 따라 재구성한다.
+- Notifiers: Provider를 업데이트한다.
+- (Riverpod는 내부적으로 스트림을 사용해서 provider가 변경될 때 consumer를 업데이트한다)
+- Provider의 일부 타입 안전성 문제를 개선했고, 상태 객체를 더 쉽게 테스트할 수 있다.
+- 유연성과 범용성이 높다.
+
+### 작동 흐름:
+
+- 데이터를 위한 Provider Repository를 선언한다.
+- 앱을 Provider 컨테이너로 감싼다.
+- 컴포넌트는 consumer를 사용해서 provider에 접근한다.
+- notifier를 통해 provider와 상호작용한다
+- consumer는 provider의 변경에 따라 UI를 재구성한다.
+
+### 작동 예시:
+```
+// State Notifier
+class CounterNotifier extends StateNotifier<int> {
+  CounterNotifier() : super(0);
+
+  void increment() => state++;
+  void decrement() => state--;
+}
+
+// Provider
+final counterProvider = StateNotifierProvider<CounterNotifier, int>((ref) {
+  return CounterNotifier();
+});
+
+// Counter Widget using Riverpod
+class SimpleCounter extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final count = ref.watch(counterProvider);
+    return Column(
+      children: [
+        IconButton(
+          icon: Icon(Icons.remove),
+          onPressed: () => ref.read(counterProvider.notifier).decrement(),
+        ),
+        Text('Count: $count'),
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () => ref.read(counterProvider.notifier).increment(),
+        ),
+      ],
+    );
+  }
+}
+
+```
+## 😃 5. GetX 패턴. (Simple State Manager, )
 
 
 --- 
