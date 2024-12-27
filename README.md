@@ -2119,9 +2119,149 @@ class StudentController extends GetxController {
     });
   }
 }
+```
 
+## 😀 푸시 알림 보내기 - Local Notifications
+- firebase 대신 라이브러리를 활용한 푸시 알림 보내기 (flutter_local_notifications)
+- 알람을 초기화 하기 위해서 구조화된 코드를 작성해야 함을 인지.
+- 알람을 사용하기 위해 andriod, iOS 코드를 수정힐 필요가 있음
+
+### 알람 초기화 코드
+```
+# notification.dart
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+// 안드로이드와 iOS에 알림을 띄우기 위한 작업 클래스
+class FlutterLocalNotification {
+  // private 생성자로 객체 생성 방지
+  FlutterLocalNotification._();
+
+  // FlutterLocalNotificationsPlugin의 인스턴스 생성
+  static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
+  // 초기화 메서드
+  static Future<void> init() async {
+    // 안드로이드 초기화 설정
+    AndroidInitializationSettings androidInitializationSettings =
+        const AndroidInitializationSettings('mipmap/ic_launcher');
+
+    // iOS 초기화 설정
+    DarwinInitializationSettings iosInitializationSetting =
+        const DarwinInitializationSettings(
+      requestAlertPermission: false, // 알림 표시 권한 요청 여부
+      requestBadgePermission: false, // 뱃지 표시 권한 요청 여부
+      requestSoundPermission: false, // 알림 소리 권한 요청 여부
+    );
+
+    // 플랫폼별 초기화 설정 통합
+    InitializationSettings initializationSettings = InitializationSettings(
+      android: androidInitializationSettings,
+      iOS: iosInitializationSetting,
+    );
+
+    // 초기화 호출
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+
+  static requestNotificationPermission() {
+    flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin>()
+        ?.requestPermissions(
+          alert: true,
+          badge: true,
+          sound: true,
+        );
+  }
+
+  // 알림을 띄우는 메서드
+  static Future<void> showNotification() async {
+    // 안드로이드 알림 세부 정보 설정
+    const AndroidNotificationDetails androidNotificationDetails =
+        AndroidNotificationDetails(
+      "channel id", // 채널 ID
+      "channel name", // 채널 이름
+      channelDescription: 'channel description', // 채널 설명
+      importance: Importance.max, // 알림 중요도 (최대)
+      priority: Priority.max, // 알림 우선순위 (최대)
+      showWhen: false, // 알림 시간 표시 여부
+    );
+
+    // iOS 및 안드로이드 공통 알림 세부 정보 설정
+    const NotificationDetails notificationDetails = NotificationDetails(
+      android: androidNotificationDetails,
+      iOS: DarwinNotificationDetails(badgeNumber: 1), // iOS 뱃지 표시 설정
+    );
+
+    // 알림 표시
+    await flutterLocalNotificationsPlugin.show(
+      0, // 알림 ID
+      'test title', // 알림 제목
+      'test body', // 알림 내용
+      notificationDetails, // 알림 세부 정보
+    );
+  }
+}
 
 ```
+
+### 메인 초기화 코드
+```
+# main.dart
+import 'package:flutter/material.dart';
+import 'package:foodmap/notification.dart';
+import 'package:get/get.dart';
+
+void main() async {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    FlutterLocalNotification.init();
+    Future.delayed(const Duration(seconds: 3),
+        () => FlutterLocalNotification.requestNotificationPermission());
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      title: "GetX Demo",
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text("GetX Example"),
+          centerTitle: true,
+          backgroundColor: Colors.blue,
+        ),
+        body: Center(
+          child: TextButton(
+              onPressed: () => FlutterLocalNotification.showNotification(),
+              child: const Text("알림보내기")),
+        ),
+      ),
+    );
+  }
+}
+
+```
+
+## 😀 WebView_flutter 구현하기
+
+
 --- 
 # Map Project
 ```
