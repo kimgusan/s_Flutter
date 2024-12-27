@@ -1912,9 +1912,84 @@ class SimpleCounter extends ConsumerWidget {
 }
 
 ```
-## 😃 5. GetX 패턴. (Simple State Manager, )
+## 😃 5. GetX 패턴. (Simple State Manager, Reactive State Manager)
+- GetX는 상태 관리, 의존성 주입, 라우팅 등을 간편하게 처리할 수 있는 라이브러리입니다. 이 예시에서는 GetX를 사용하여 카운터 애플리케이션을 구현하고 있습니다.
+### 1. Simple State Manager
+- 직접 update 메소드를 통해 업데이트를 진행.
 
+### 2. Reactive State Manager
+#### 1번 예제
+```
+# main.dart
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: "Flutter Demo",
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text("GetX Example"),
+        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            GetBuilder<CountController>(
+              init: CountController(),
+              builder: (_) =>
+                  Text("현재 카운트: ${Get.find<CountController>().counter}"),
+            ),
+            const SizedBox(
+              height: 50,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(
+                  onPressed: () => Get.find<CountController>().increse(),
+                  child: const Text("증가"),
+                ),
+                const SizedBox(
+                  height: 50,
+                ),
+                TextButton(
+                  onPressed: () => Get.find<CountController>().decrese(),
+                  child: const Text("감소"),
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+
+```
+# countController.dart
+- update 메소드가 존재해야 UI 가 변경된다.
+
+import 'package:get/get.dart';
+
+class CountController extends GetxController {
+  int _counter = 0;
+
+  int get counter => _counter;
+
+  void increse() {
+    _counter++;
+    update();
+  }
+
+  void decrese() {
+    _counter--;
+    update();
+  }
+}
+
+```
 --- 
 # Map Project
 ```
