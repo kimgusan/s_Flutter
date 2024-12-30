@@ -2745,8 +2745,202 @@ class _HomePageState extends State<HomePage> {
 }
 ```
 
-## 😀
+## 😀 Carousel Slider - 자동 슬리이드(무한 슬라이드), 인디케이터
+1. carousel_slider:  Flutter에서 이미지 슬라이더를 쉽게 구현할 수 있도록 도와주는 라이브러리입니다. 이 라이브러리를 사용하면 이미지, 텍스트, 위젯 등을 슬라이드 형식으로 표시할 수 있으며, 자동 슬라이드, 무한 스크롤, 인디케이터 등의 기능을 지원합니다.
+2. 인디케이터: 해당 슬라이드로 이동할 수 있는 기능
+- entries는 Dart의 Map 클래스에서 제공하는 속성으로, 맵의 모든 키-값 쌍을 MapEntry 객체의 리스트로 반환합니다. 이 속성을 사용하면 맵의 각 항목에 대해 반복(iterate)할 수 있습니다.
 
+```
+class _HomePageState extends State<HomePage> {
+  int _current = 0;
+
+  final CarouselSliderController _controller = CarouselSliderController();
+
+  List imageList = [
+    "https://cdn.pixabay.com/photo/2014/04/14/20/11/pink-324175_1280.jpg",
+    "https://cdn.pixabay.com/photo/2014/02/27/16/10/flowers-276014_1280.jpg",
+    "https://cdn.pixabay.com/photo/2012/03/01/00/55/flowers-19830_1280.jpg",
+    "https://cdn.pixabay.com/photo/2015/06/19/20/13/sunset-815270_1280.jpg",
+    "https://cdn.pixabay.com/photo/2016/01/08/05/24/sunflower-1127174_1280.jpg",
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Carousel Slide'),
+      ),
+      body: Column(
+        children: [
+          SizedBox(
+            height: 300,
+            child: Stack(
+              children: [
+                sliderWidget(),
+                sliderIndicator(),
+              ],
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.all(20),
+            child: const Text("Welcome to the carousel slide app",
+                style: TextStyle(fontSize: 18)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget sliderWidget() {
+    return CarouselSlider(
+      carouselController: _controller,
+      items: imageList.map(
+        (imgLink) {
+          return Builder(
+            builder: (context) {
+              return SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Image(
+                  fit: BoxFit.fill,
+                  image: NetworkImage(
+                    imgLink,
+                  ),
+                ),
+              );
+            },
+          );
+        },
+      ).toList(),
+      options: CarouselOptions(
+        height: 300,
+        viewportFraction: 1.0,
+        autoPlay: true,
+        autoPlayInterval: const Duration(seconds: 4),
+        onPageChanged: (index, reason) {
+          setState(() {
+            _current = index;
+          });
+        },
+      ),
+    );
+  }
+
+  Widget sliderIndicator() {
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        // mgList의 각 항목을 인덱스와 함께 가져옵니다.
+        children: imageList.asMap().entries.map((entry) {
+          // 인디케이터를 클릭할 수 있도록 하는 기능
+          return GestureDetector(
+            onTap: () => _controller.animateToPage(entry.key),
+            child: Container(
+              width: 12,
+              height: 12,
+              margin:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Color.fromRGBO(
+                    255, 255, 255, _current == entry.key ? 0.9 : 0.4),
+              ),
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+}
+
+```
+
+## 😀 팩토리(Factory) 싱글톤 (Singleton) 패턴 이해하기.
+1. Factiry Pattern (팩토리 패턴)
+- 팩토리 패턴은 객체 생성 로직을 별도의 팩토리 클래스로 분리하여, 클라이언트 코드가 객체 생성 방법을 알 필요 없이 객체를 생성할 수 있도록 하는 디자인 패턴입니다. 이 패턴은 객체 생성의 복잡성을 줄이고, 코드의 유연성과 재사용성을 높이는 데 도움을 줍니다.
+### 특징:
+- 객체 생성의 캡슐화: 객체 생성 로직을 팩토리 메서드에 캡슐화하여 클라이언트 코드가 객체 생성 방법을 알 필요가 없습니다.
+- 유연성: 다양한 객체를 생성할 수 있는 유연성을 제공합니다. 팩토리 메서드를 변경함으로써 생성되는 객체의 종류를 쉽게 변경할 수 있습니다.
+- 다형성: 인터페이스나 추상 클래스를 사용하여 다양한 구현체를 생성할 수 있습니다.
+```
+### 예시 코드:
+// Product 인터페이스
+abstract class Product {
+  void use();
+}
+
+// ConcreteProduct 클래스
+class ConcreteProductA implements Product {
+  @override
+  void use() {
+    print("Using Product A");
+  }
+}
+
+class ConcreteProductB implements Product {
+  @override
+  void use() {
+    print("Using Product B");
+  }
+}
+
+// Factory 클래스
+class ProductFactory {
+  static Product createProduct(String type) {
+    if (type == 'A') {
+      return ConcreteProductA();
+    } else if (type == 'B') {
+      return ConcreteProductB();
+    }
+    throw Exception("Unknown product type");
+  }
+}
+
+// 클라이언트 코드
+void main() {
+  Product productA = ProductFactory.createProduct('A');
+  productA.use(); // Output: Using Product A
+
+  Product productB = ProductFactory.createProduct('B');
+  productB.use(); // Output: Using Product B
+}
+
+```
+2. Singleton Pattern (싱글톤 패턴)
+- 글톤 패턴은 클래스의 인스턴스가 오직 하나만 존재하도록 보장하는 디자인 패턴입니다. 이 패턴은 전역 상태를 관리하거나, 자원(예: 데이터베이스 연결, 설정 등)을 공유해야 할 때 유용합니다.
+### 특징:
+- 유일한 인스턴스: 클래스의 인스턴스가 하나만 생성되며, 이 인스턴스에 대한 전역 접근을 제공합니다.
+- 지연 초기화: 필요할 때 인스턴스를 생성할 수 있으며, 초기화 비용을 줄일 수 있습니다.
+- 전역 상태 관리: 애플리케이션 전역에서 상태를 관리할 수 있는 방법을 제공합니다
+```
+# 싱글톤 예시코드
+class Singleton {
+  // private static instance
+  static final Singleton _instance = Singleton._internal();
+
+  // private constructor
+  Singleton._internal();
+
+  // factory constructor
+  factory Singleton() {
+    return _instance;
+  }
+
+  void someMethod() {
+    print("Singleton method called");
+  }
+}
+
+// 클라이언트 코드
+void main() {
+  Singleton singleton1 = Singleton();
+  Singleton singleton2 = Singleton();
+
+  print(identical(singleton1, singleton2)); // Output: true
+  singleton1.someMethod(); // Output: Singleton method called
+}
+```
+## 😀 파이어베이스 이메일/비밀번호 로그인
 
 --- 
 # Map Project
