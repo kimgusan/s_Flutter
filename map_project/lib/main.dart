@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:map_project/controllers/question_controller.dart';
 import 'package:map_project/widgets/modals/privacyModal.dart';
 import 'package:map_project/widgets/modals/qrCodeModal.dart';
+import 'package:map_project/widgets/submit_summary.dart';
+import "package:map_project/widgets/question.dart";
 
 void main() {
   runApp(const MyApp());
@@ -13,20 +17,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Moneyterview Demo',
+    return GetMaterialApp(
+      title: "Moneyterview Demo",
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         textTheme: Theme.of(context).textTheme.apply(
-              fontFamily: 'NotoSansKR',
+              fontFamily: "NonoSansKR",
             ),
         useMaterial3: true,
       ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const MyHomePage(),
-        '/qrLinkModal': (context) => const QrLinkModal()
-      },
+      // initialRoute: '/',
+      initialRoute: '/question',
+      getPages: [
+        GetPage(name: '/', page: () => const MyHomePage()),
+        GetPage(name: '/qrLinkModal', page: () => const QrLinkModal()),
+        GetPage(name: '/privacyModal', page: () => const PrivacyModal()),
+        GetPage(name: '/submitSummary', page: () => const SubmitSummary()),
+        GetPage(name: '/question', page: () => QuestionPage()),
+      ],
     );
   }
 }
@@ -114,7 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         Container(
                                           padding: EdgeInsets.only(left: 30),
                                           child: SvgPicture.asset(
-                                            'lib/assets/images/mainImage/btn_kakao.svg',
+                                            'lib/assets/images/main_image/btn_kakao.svg',
                                             width: 128,
                                             height: 128,
                                           ),
@@ -133,7 +141,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                               );
                                             },
                                             child: Image.asset(
-                                              'lib/assets/images/mainImage/btn_qr_login.webp',
+                                              'lib/assets/images/main_image/btn_qr_login.webp',
                                               width: 128,
                                               height: 128,
                                             ),
@@ -158,11 +166,10 @@ class _MyHomePageState extends State<MyHomePage> {
               GestureDetector(
                 onTap: () {
                   showDialog(
-                    context: context,
-                    builder: (context) => Dialog(
-                      child: Privacymodal(),
-                    ),
-                  );
+                      context: context,
+                      builder: (context) => Dialog(
+                            child: PrivacyModal(),
+                          ));
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,

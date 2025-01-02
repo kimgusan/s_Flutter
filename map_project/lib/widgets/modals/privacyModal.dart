@@ -1,7 +1,12 @@
-import 'package:flutter/material.dart';
+import 'dart:math';
 
-class Privacymodal extends StatelessWidget {
-  const Privacymodal({super.key});
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+// 해당 부분의 텍스트 모두 클래스로 구분하여 일관된 텍스트는 모두 그렇게 변경하여 작성할 것.
+// (제목, 부제, 내용, 이메일)
+class PrivacyModal extends StatelessWidget {
+  const PrivacyModal({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +20,7 @@ class Privacymodal extends StatelessWidget {
                 color: Colors.grey[400],
                 borderRadius: BorderRadius.circular(10)),
             child: Container(
+              padding: EdgeInsets.all(8),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10),
@@ -76,7 +82,8 @@ class Privacymodal extends StatelessWidget {
                         ),
                         SizedBox(height: 16),
                         Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.baseline,
+                          textBaseline: TextBaseline.alphabetic,
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(right: 8.0),
@@ -85,10 +92,12 @@ class Privacymodal extends StatelessWidget {
                                 size: 6,
                               ),
                             ),
-                            Text(
-                              "회원가입 시 수집될 수 있는 개인정보",
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            Expanded(
+                              child: Text(
+                                "회원가입 시 수집될 수 있는 개인정보",
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
                             ),
                           ],
                         ),
@@ -529,11 +538,10 @@ class Privacymodal extends StatelessWidget {
                               ),
                             ),
                             Expanded(
-                              child: Text(
-                                "탈퇴 및 문의: deayeonpnc@gmail.com",
-                                style: TextStyle(fontSize: 13, height: 1.5),
-                              ),
-                            ),
+                                child: EmailLink(
+                              emailTitle: "문의 이메일: ",
+                              email: 'deayeonpnc@gmail.com',
+                            )),
                           ],
                         ),
                         SizedBox(height: 20),
@@ -545,8 +553,33 @@ class Privacymodal extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 16),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "개인정보 보호 대연피앤씨: 최정만",
+                              style: TextStyle(
+                                fontSize: 13,
+                                height: 1.4,
+                              ),
+                              textAlign: TextAlign.justify,
+                            ),
+                            EmailLink(
+                                email: "deayeonpnc@gmail.com",
+                                emailTitle: "이메일:  "),
+                            Text(
+                              "대표전화: 1577-9872",
+                              style: TextStyle(
+                                fontSize: 13,
+                                height: 1.4,
+                              ),
+                              textAlign: TextAlign.justify,
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 16),
                         Text(
-                          "개인정보 보호 대연피앤씨: 최정만",
+                          "시행일자: 2024년 11월 05일",
                           style: TextStyle(
                             fontSize: 13,
                             height: 1.4,
@@ -554,25 +587,24 @@ class Privacymodal extends StatelessWidget {
                           textAlign: TextAlign.justify,
                         ),
                         SizedBox(height: 16),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.baseline,
-                          textBaseline: TextBaseline.alphabetic,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(left: 8.0, right: 8.0),
-                              child: Icon(
-                                Icons.circle,
-                                size: 6,
-                              ),
-                            ),
-                            Expanded(
-                              child: Text(
-                                "탈퇴 및 문의: deayeonpnc@gmail.com",
-                                style: TextStyle(fontSize: 13, height: 1.5),
-                              ),
-                            ),
-                          ],
+                        Center(
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blue,
+                                foregroundColor: Colors.white,
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 10,
+                                  horizontal: 20,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10))),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text("초기화면으로"),
+                          ),
                         ),
+                        SizedBox(height: 10),
                       ],
                     ),
                   ),
@@ -582,6 +614,48 @@ class Privacymodal extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+}
+
+class EmailLink extends StatelessWidget {
+  final String email;
+  final String emailTitle;
+
+  const EmailLink({super.key, required this.email, required this.emailTitle});
+
+  Future<void> _launchEmail(String email) async {
+    final Uri emailUri = Uri(
+      scheme: 'mailto',
+      path: email,
+      query: 'subject=문의사항&body=안녕하세요, ',
+    );
+
+    if (await canLaunchUrl(emailUri)) {
+      await launchUrl(emailUri);
+    } else {
+      throw '이메일을 열 수 없습니다. $emailUri';
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Text(emailTitle),
+        GestureDetector(
+          onTap: () => _launchEmail(email),
+          child: Text(
+            email,
+            style: TextStyle(
+              fontSize: 13,
+              height: 1.5,
+              color: Colors.blue,
+              decoration: TextDecoration.underline,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

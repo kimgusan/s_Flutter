@@ -826,7 +826,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // 데이터 저장
   Future<void> saveLikedToon(String id) async {
-    final updatedToons = [...likedToons, id];
+    final updatedToons = [...li
+    kedToons, id];
     await prefs.setStringList('likedToons', updatedToons);
     setState(() {
       likedToons = updatedToons;
