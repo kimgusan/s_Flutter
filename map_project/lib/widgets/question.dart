@@ -80,7 +80,9 @@ class QuestionPage extends StatelessWidget {
                                 .answers
                                 .length,
                             (index) {
-                              return Container(
+                              return AnimatedContainer(
+                                duration: Duration(milliseconds: 200),
+                                curve: Curves.easeInOut,
                                 margin: EdgeInsets.only(bottom: 10),
                                 decoration: BoxDecoration(
                                   color: questionController.selectedAnswers[
@@ -100,17 +102,14 @@ class QuestionPage extends StatelessWidget {
                                     width: double.infinity,
                                     margin: EdgeInsets.only(
                                       left: 12,
-                                      top: 10,
+                                      top: 12,
                                       bottom: 10,
                                     ),
-                                    child: Text(
-                                      questionController
-                                          .questions[questionController
-                                              .currentQuestionIndex.value]
-                                          .answers[index],
+                                    child: AnimatedDefaultTextStyle(
+                                      duration: Duration(milliseconds: 200),
                                       style: TextStyle(
                                         fontSize: 14,
-                                        fontWeight: FontWeight.bold,
+                                        // fontWeight: FontWeight.bold,
                                         color: questionController
                                                         .selectedAnswers[
                                                     questionController
@@ -120,6 +119,12 @@ class QuestionPage extends StatelessWidget {
                                             ? Colors.white
                                             : Colors.black,
                                       ),
+                                      child: Text(
+                                        questionController
+                                            .questions[questionController
+                                                .currentQuestionIndex.value]
+                                            .answers[index],
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -127,7 +132,7 @@ class QuestionPage extends StatelessWidget {
                             },
                           ),
                           SizedBox(
-                            height: 10,
+                            height: 5,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,

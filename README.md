@@ -2980,3 +2980,7 @@ AppBar의 중앙에 위치 (centerTitle 속성으로 조절 가능)
 
 ---
 tip. 싱글톤 패턴: 생성자가 여러 차례 호출되더라도 실제로 생성되는 객체는 하나이고, 최초 생성 이후에 호출된 생성자는 최초의 생성가자 생성한 객체를 리턴한다.
+
+# Summary Project
+1. Animated 효과 
+2. LinearGradient 효과
