@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:map_project/controllers/question_controller.dart';
-import 'package:map_project/widgets/modals/privacyModal.dart';
-import 'package:map_project/widgets/modals/qrCodeModal.dart';
+import 'package:map_project/widgets/answer.dart';
+import 'package:map_project/widgets/modals/privacy_modal.dart';
+import 'package:map_project/widgets/modals/qrCode_modal.dart';
 import 'package:map_project/widgets/submit_summary.dart';
 import "package:map_project/widgets/question.dart";
 
@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/privacyModal', page: () => const PrivacyModal()),
         GetPage(name: '/submitSummary', page: () => const SubmitSummary()),
         GetPage(name: '/question', page: () => QuestionPage()),
+        GetPage(name: '/answer', page: () => AnswerPage()),
       ],
     );
   }

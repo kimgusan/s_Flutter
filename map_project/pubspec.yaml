@@ -93,6 +93,7 @@ flutter:
     - lib/assets/images/logo/
     - lib/assets/images/main_image/
     - lib/assets/images/modal/
+    - lib/assets/images/answer/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

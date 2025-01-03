@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:map_project/controllers/answer_controller.dart';
 
 class QuestionController extends GetxController {
   var currentQuestionIndex = 0.obs;
@@ -115,8 +116,11 @@ class QuestionController extends GetxController {
     if (currentQuestionIndex.value < questions.length - 1) {
       currentQuestionIndex.value++;
     } else {
-      // 결과 페이지로 이동
-      Get.toNamed('/result');
+      // 결과 페이지로 이동 (필요시 데이터 값만 arguments로 전달 할 수 있으나 해당 내용은 보류)
+      // 이거를 딴곳으로 빼야할까?
+      // final AnswerController answerController = Get.find<AnswerController>();
+      // answerController.calculateAnswer();
+      Get.toNamed('/answer');
     }
   }
 
@@ -131,6 +135,13 @@ class QuestionController extends GetxController {
   void selectAnswer(int? index) {
     selectedAnswers[currentQuestionIndex.value] = index;
     selectedAnswers.refresh();
+  }
+
+  // 초기 화면으로 이동
+  void reset() {
+    currentQuestionIndex.value = 0;
+    selectedAnswers
+        .assignAll(List<int?>.filled(questions.length, null, growable: false));
   }
 }
 

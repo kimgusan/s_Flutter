@@ -213,13 +213,45 @@ class QuestionPage extends StatelessWidget {
                                     "${questionController.currentQuestionIndex.value + 1} / ${questionController.questions.length}",
                                   ),
                                 ),
-                              )
+                              ),
                             ],
-                          )
+                          ),
                         ],
                       ),
                     ),
                   ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFF2C61E6),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          padding: EdgeInsets.all(12),
+                        ),
+                        onPressed: () {
+                          questionController.reset();
+                          // Get.toNamed('/question');
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              "초기화면으로",
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -243,36 +275,42 @@ class AnimatePrograssBar extends StatelessWidget {
     final double progress =
         (questionController.currentQuestionIndex.value + 1) /
             questionController.questions.length;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final double maxWidth = constraints.maxWidth;
 
-    return TweenAnimationBuilder<double>(
-      tween: Tween<double>(begin: 0.0, end: progress),
-      duration: Duration(milliseconds: 200),
-      curve: Curves.easeIn,
-      builder: (context, value, child) {
-        return Stack(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: Container(
-                height: 8,
-                color: Colors.grey[300],
-              ),
-            ),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    color: Color(0xFF2C61E6),
+        return TweenAnimationBuilder<double>(
+          tween: Tween<double>(begin: 0.0, end: progress),
+          duration: Duration(milliseconds: 200),
+          curve: Curves.easeIn,
+          builder: (context, value, child) {
+            return Stack(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Container(
+                    height: 8,
+                    color: Colors.grey[300],
                   ),
-                  height: 8,
-                  width: MediaQuery.of(context).size.width * value,
                 ),
-              ),
-            ),
-          ],
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        color: Color(0xFF2C61E6),
+                      ),
+                      height: 8,
+                      // width: MediaQuery.of(context).size.width * value,
+                      width: maxWidth * value,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
         );
       },
     );
