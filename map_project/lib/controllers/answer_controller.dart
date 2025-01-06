@@ -12,6 +12,7 @@ class AnswerController extends GetxController {
   var recommendation = "".obs; // 추천 내용 노후 준비 상태
   var products = <int>[].obs; // 추천 상품 목록
   var finalImage = "".obs; // 최종 이미지
+  var finalImageName = "".obs; // 최종 이름
   var imageRecommendation = "".obs; // 이미지 추천 메세지
 
   void calculateAnswer() {
@@ -20,18 +21,19 @@ class AnswerController extends GetxController {
         .fold<int>(0, (sum, score) => sum + (score != null ? score + 1 : 0));
 
     if (totalScore.value < 30) {
+      _setResult(0, [0, 5, 1]);
     } else if (totalScore <= 40) {
-      _setResult(0, [4, 0, 1]);
+      _setResult(0, [0, 5, 1]);
     } else if (totalScore <= 50) {
-      _setResult(1, [4, 2, 0]);
+      _setResult(1, [0, 2, 0]);
     } else if (totalScore <= 60) {
-      _setResult(2, [4, 3, 1]);
+      _setResult(2, [0, 3, 1]);
     } else if (totalScore <= 70) {
-      _setResult(3, [4, 2, 3]);
+      _setResult(3, [0, 2, 3]);
     } else if (totalScore <= 80) {
-      _setResult(4, [4, 0, 1]);
+      _setResult(4, [0, 4, 1]);
     } else {
-      _setResult(5, [4, 3, 2]);
+      _setResult(5, [0, 3, 2]);
     }
   }
 
@@ -41,6 +43,7 @@ class AnswerController extends GetxController {
     recommendation.value = answerRecommendation[index]['recommendation']!;
     products.value = productIndices;
     finalImage.value = answerResults[index]['path']!;
+    finalImageName.value = answerResults[index]['name']!;
     imageRecommendation.value = answerResults[index]['text']!;
   }
 }

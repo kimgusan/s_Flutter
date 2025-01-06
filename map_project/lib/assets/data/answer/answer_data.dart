@@ -1,17 +1,17 @@
 // 추천상품 관련 데이터
 const List<Map<String, String>> allProducts = [
-  {"name": "개발예정지", "path": "/lib/asset/images/answer/product/토지.webp"},
-  {"name": "금 투자", "path": "/lib/asset/images/answer/product/금.webp"},
-  {"name": "예금/적금", "path": "/lib/asset/images/answer/product/예금.webp"},
-  {"name": "비트코인", "path": "/lib/asset/images/answer/product/코인.webp"},
-  {"name": "주식", "path": "/lib/asset/images/answer/product/주식.webp"},
-  {"name": "아파트", "path": "/lib/asset/images/answer/product/아파트.webp"},
+  {"name": "개발예정지", "path": "lib/assets/images/answer/product/토지.webp"},
+  {"name": "금 투자", "path": "lib/assets/images/answer/product/금.webp"},
+  {"name": "예금/적금", "path": "lib/assets/images/answer/product/예금.webp"},
+  {"name": "비트코인", "path": "lib/assets/images/answer/product/코인.webp"},
+  {"name": "주식", "path": "lib/assets/images/answer/product/주식.webp"},
+  {"name": "아파트", "path": "lib/assets/images/answer/product/아파트.webp"},
 ];
 
 const List<Map<String, String>> answerResults = [
   {
     "name": "",
-    "path": "/lib/asset/images/answer/result/ScoreMother(30_40).webp",
+    "path": "lib/assets/images/answer/result/ScoreMother(30_40).webp",
     "text": """
 안녕하세요, 저는 이 시장 골목에서 오랜 세월을 보내왔어요. 젊었을 때는 열심히 일하고, 가정을 꾸리며 바쁜 날들을 보냈지만, 솔직히 말하면 노후 준비를 제대로 하지 못한 탓에 지금은 이렇게 작은 자리에서 하루를 보내고 있답니다.
 
@@ -23,7 +23,7 @@ const List<Map<String, String>> answerResults = [
   },
   {
     "name": "",
-    "path": "/lib/asset/images/answer/result/ScoreMother(40_50).webp",
+    "path": "lib/assets/images/answer/result/ScoreMother(40_50).webp",
     "text": """
 안녕하세요, 저는 이 시장 골목에서 오랜 세월을 보내왔어요. 젊었을 때는 열심히 일하고, 가정을 꾸리며 바쁜 날들을 보냈지만, 솔직히 말하면 노후 준비를 제대로 하지 못한 탓에 지금은 이렇게 작은 자리에서 하루를 보내고 있답니다.
 
@@ -36,17 +36,17 @@ const List<Map<String, String>> answerResults = [
   },
   {
     "name": "할머니의 사랑의 선물: 세대를 잇는 명품 가방",
-    "path": "/lib/asset/images/answer/result/ScoreMother(50_60).webp",
+    "path": "lib/assets/images/answer/result/ScoreMother(50_60).webp",
     "text": ""
   },
   {
     "name": "황금빛 노후: 할머니의 화려한 슈퍼카와 인생 2막",
-    "path": "/lib/asset/images/answer/result/ScoreMother(60_70).webp",
+    "path": "lib/assets/images/answer/result/ScoreMother(60_70).webp",
     "text": ""
   },
   {
     "name": "황금씨앗: 할머니가 심는 미래의 땅",
-    "path": "/lib/asset/images/answer/result/ScoreMother(80).webp",
+    "path": "lib/assets/images/answer/result/ScoreMother(80).webp",
     "text": ""
   }
 ];

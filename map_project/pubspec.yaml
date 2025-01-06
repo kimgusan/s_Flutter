@@ -94,6 +94,11 @@ flutter:
     - lib/assets/images/main_image/
     - lib/assets/images/modal/
     - lib/assets/images/answer/
+    - lib/assets/images/answer/product/
+    - lib/assets/images/answer/result/
+    - lib/assets/data/
+    - lib/assets/images/
+
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
