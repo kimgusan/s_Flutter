@@ -2984,3 +2984,4 @@ tip. 싱글톤 패턴: 생성자가 여러 차례 호출되더라도 실제로 �
 # Summary Project
 1. Animated 효과 
 2. LinearGradient 효과
+3. font 메소드: 리스트 누적 값
