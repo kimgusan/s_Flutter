@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:map_project/controllers/answer_controller.dart';
 
 class QuestionController extends GetxController {
   var currentQuestionIndex = 0.obs;
@@ -116,8 +115,8 @@ class QuestionController extends GetxController {
     if (currentQuestionIndex.value < questions.length - 1) {
       currentQuestionIndex.value++;
     } else {
-      // 결과 페이지로 이동 (필요시 데이터 값만 arguments로 전달 할 수 있으나 해당 내용은 보류)
-      // 이거를 딴곳으로 빼야할까?
+      // 결과 페이지로 이동 (필요시 데이터 값만 arguments로 전달 할 수 있으나 그냥 answer에서
+      // 바로 questionController로 접근 가능하도록 작업 진행)
       // final AnswerController answerController = Get.find<AnswerController>();
       // answerController.calculateAnswer();
       Get.toNamed('/answer');

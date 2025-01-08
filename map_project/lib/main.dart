@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:map_project/widgets/survey_list.dart';
 import 'package:map_project/widgets/answer.dart';
 import 'package:map_project/widgets/modals/privacy_modal.dart';
 import 'package:map_project/widgets/modals/qrCode_modal.dart';
 import 'package:map_project/widgets/submit_summary.dart';
 import "package:map_project/widgets/question.dart";
+import 'package:map_project/widgets/vanity_caculator.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,7 +29,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // initialRoute: '/',
-      initialRoute: '/question',
+      initialRoute: '/surveyList',
       getPages: [
         GetPage(name: '/', page: () => const MyHomePage()),
         GetPage(name: '/qrLinkModal', page: () => const QrLinkModal()),
@@ -35,6 +37,8 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/submitSummary', page: () => const SubmitSummary()),
         GetPage(name: '/question', page: () => QuestionPage()),
         GetPage(name: '/answer', page: () => AnswerPage()),
+        GetPage(name: '/surveyList', page: () => SurveyList()),
+        GetPage(name: '/vanityCalc', page: () => VanityCalc()),
       ],
     );
   }

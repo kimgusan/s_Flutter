@@ -65,3 +65,5 @@ linux/flutter/ephemeral/
 # VS Code 관련
 .vscode/
 .history/
+
+.env
