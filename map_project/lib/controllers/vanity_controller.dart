@@ -16,7 +16,7 @@ class VanityController extends GetxController {
     final int objectPrice = int.tryParse(price.value) ?? 0;
 
     if (monthMoney == 0) {
-      resultScore.value = "월급은 0이 될 수 없으며 숫자만 입력하세요";
+      resultScore.value = "월급은 0보다 커야하며 숫자만 입력하세요";
       return;
     }
 
