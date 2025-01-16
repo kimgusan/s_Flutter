@@ -75,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 alignment: Alignment.center,
                 width: 448,
                 child: Image.asset(
-                  'lib/assets/images/logo/logo_main_daeyeon.png',
+                  'lib/assets/images/logo/돈터뷰_기본로고.png',
                   fit: BoxFit.contain,
                 ),
               ),

@@ -66,6 +66,7 @@ dependencies:
   firebase_auth: ^5.3.4
   flutter_svg: ^2.0.16
   url_launcher: ^6.3.1
+  intl: ^0.20.1
 
 dev_dependencies:
   flutter_test:
@@ -92,13 +93,15 @@ flutter:
   assets:
     - lib/assets/images/logo/
     - lib/assets/images/main_image/
+    - lib/assets/images/vanity/
+    - lib/assets/images/vanity/car/
+    - lib/assets/images/vanity/bag/
     - lib/assets/images/modal/
     - lib/assets/images/answer/
     - lib/assets/images/answer/product/
     - lib/assets/images/answer/result/
     - lib/assets/data/
     - lib/assets/images/
-
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
