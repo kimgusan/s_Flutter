@@ -75,27 +75,27 @@ const List<Map<String, dynamic>> vanityItems = [
       {
         "name": "코치 토트백",
         "price": 500000,
-        "image": "/vanityImage/bagImage/bag_coach.jpeg",
+        "image": "lib/assets/images/vanity/bag/bag_coach.jpeg",
       },
       {
         "name": "구찌 마몬트",
         "price": 2500000,
-        "image": "/vanityImage/bagImage/bag_gucci.jpeg",
+        "image": "lib/assets/images/vanity/bag/bag_gucci.jpeg",
       },
       {
         "name": "루이비통 네버풀",
         "price": 5500000,
-        "image": "/vanityImage/bagImage/bag_louisvuitton.jpeg",
+        "image": "lib/assets/images/vanity/bag/bag_louisvuitton.jpeg",
       },
       {
         "name": "샤넬 플랩백",
         "price": 13000000,
-        "image": "/vanityImage/bagImage/bag_chanel.webp",
+        "image": "lib/assets/images/vanity/bag/bag_chanel.webp",
       },
       {
         "name": "에르메스 버킨",
         "price": 21000000,
-        "image": "/vanityImage/bagImage/bag_hermes.webp",
+        "image": "lib/assets/images/vanity/bag/bag_hermes.webp",
       },
     ]
   },
@@ -105,12 +105,12 @@ const List<Map<String, dynamic>> vanityItems = [
       {
         "name": "장비",
         "price": 2300000,
-        "image": '/vanityImage/carimage/car.jpg'
+        "image": 'lib/assets/images/vanity/car/car_avante.jpg',
       },
       {
         "name": "device",
         "price": 2300000,
-        "image": '/vanityImage/carimage/car.jpg'
+        "image": 'lib/assets/images/vanity/car/car_avante.jpg',
       }
     ]
   },
@@ -120,12 +120,12 @@ const List<Map<String, dynamic>> vanityItems = [
       {
         "name": "watch",
         "price": 2300000,
-        "image": '/vanityImage/carimage/car.jpg'
+        "image": 'lib/assets/images/vanity/car/car_avante.jpg',
       },
       {
         "name": "watch2",
         "price": 2300000,
-        "image": '/vanityImage/carimage/car.jpg'
+        "image": 'lib/assets/images/vanity/car/car_avante.jpg',
       }
     ]
   },
@@ -135,12 +135,12 @@ const List<Map<String, dynamic>> vanityItems = [
       {
         "name": "expense",
         "price": 2300000,
-        "image": '/vanityImage/carimage/car.jpg'
+        "image": 'lib/assets/images/vanity/car/car_avante.jpg',
       },
       {
         "name": "expense2",
         "price": 2300000,
-        "image": '/vanityImage/carimage/car.jpg'
+        "image": 'lib/assets/images/vanity/car/car_avante.jpg',
       }
     ]
   },

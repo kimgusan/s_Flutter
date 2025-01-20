@@ -62,7 +62,6 @@ class VanityController extends GetxController {
         resultAdvice.value = getVanityAdvice(vanityScore, category);
         break;
       case 'IT':
-
         // 조건: 월급보다 고정지출이 더 높아서 음수인 경우
         if (objectPrice - fixedExpensesValue < 0) {
           resultTitle.value = vanityLevel[4].values.first;
@@ -72,7 +71,8 @@ class VanityController extends GetxController {
           return;
         }
 
-        vanityScore = (objectPrice - fixedExpensesValue) / (monthMoney);
+        vanityScore =
+            objectPrice / (monthMoney - fixedExpensesValue) * deviceUsePeriod;
         updateResultColor(vanityScore);
         resultTitle.value = getVanityLevelTitle(vanityScore, category);
         resultAdvice.value = getVanityAdvice(vanityScore, category);
@@ -179,5 +179,112 @@ class VanityController extends GetxController {
   // 초기화
   void resetInput() {
     resultScore.value = '';
+  }
+
+  // 차량 리스트에 대하여 개별적으로 계산하는 클래스 생성
+  Map<String, dynamic> updatePriceAndRecalculate(
+      int newPrice, String category) {
+    // 새로운 가격으로 신규 계산 (차량가격)
+    final newObjectPrice = newPrice;
+    // 월급
+    final int salary = int.tryParse(monthPrice.value) ?? 0;
+    // 허세지수 결과
+    double newVanityScore = 0.0;
+    String title = "";
+    String advice = "";
+    Color color = Colors.black;
+
+    if (salary == 0) {
+      return {
+        "vanityScore": 0.0,
+        "title": "",
+        "advice": "",
+        "color": color,
+      };
+    }
+
+    // 차량 허세 지수 계산 로직 (해당 부분은 switch 구문이나 car, bag 같은 로직을 구분할 수 있는 방법이 필요.)
+    // cateogry 항목을 사용하여 계산 로직 구성
+    switch (category) {
+      // 치량 허세 지수
+      case 'car':
+        // 6개월 급여
+        newVanityScore = newObjectPrice / (salary * 6);
+        color = newUpdateResultColor(newVanityScore);
+        // 허세지수 결과
+        title = newGetVanityLevelTitle(newVanityScore, category);
+        advice = getVanityAdvice(newVanityScore, category);
+        break;
+      case 'bag':
+        // 연봉의 10%
+        newVanityScore = newObjectPrice / (salary * 12 * 0.1);
+        color = newUpdateResultColor(newVanityScore);
+        title = newGetVanityLevelTitle(newVanityScore, category);
+        advice = getVanityAdvice(newVanityScore, category);
+        break;
+    }
+
+    return {
+      "newVanityScore": newVanityScore,
+      "title": title,
+      "advice": advice,
+      "color": color
+    };
+  }
+
+  // 허세지수 title 함수
+  String newGetVanityLevelTitle(double vanityScore, String category) {
+    // 1. 0 보다 작은 경우
+    if (vanityScore < 0) {
+      return vanityLevel[0].values.first;
+    }
+    // 2. 1 보다 값이 작은 경우
+    else if (vanityScore <= 1) {
+      return vanityLevel[0].values.first;
+    }
+    // 2. 1.5 보다 값이 작은 경우
+    else if (vanityScore <= 1.5) {
+      return vanityLevel[1].values.first;
+    }
+    // 3. 2 보다 값이 작은 경우
+    else if (vanityScore <= 2) {
+      return vanityLevel[2].values.first;
+    }
+    // 4. 2.5 보다 값이 작은 경우
+    else if (vanityScore <= 2.5) {
+      return vanityLevel[3].values.first;
+    }
+    // 그 외
+    else {
+      return vanityLevel[4].values.first;
+    }
+  }
+
+  // 허세지수 점수에 따른 색상 업데이트 함수
+  Color newUpdateResultColor(double vanityScore) {
+    // 1. 0 보다 작은 경우
+    if (vanityScore < 0) {
+      return Colors.pink;
+    }
+    // 2. 1 보다 값이 작은 경우
+    else if (vanityScore <= 1) {
+      return Colors.green;
+    }
+    // 2. 1.5 보다 값이 작은 경우
+    else if (vanityScore <= 1.5) {
+      return Colors.blue;
+    }
+    // 3. 2 보다 값이 작은 경우
+    else if (vanityScore <= 2) {
+      return Colors.yellow;
+    }
+    // 4. 2.5 보다 값이 작은 경우
+    else if (vanityScore <= 2.5) {
+      return Colors.orange;
+    }
+    // 그 외
+    else {
+      return Colors.red;
+    }
   }
 }

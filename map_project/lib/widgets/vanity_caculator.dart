@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -16,6 +15,14 @@ class _VaniryCalcState extends State<VanityCalc> {
   final VanityController vanityController = Get.put(VanityController());
   var gender = "".obs;
   var category = "".obs;
+  var showResult = false;
+
+  // 하위 위젯에서도 사용하기 위한 콜백 함수 추가
+  void updateShowResult(bool value) {
+    setState(() {
+      showResult = value;
+    });
+  }
 
   @override
   void initState() {
@@ -253,6 +260,7 @@ class _VaniryCalcState extends State<VanityCalc> {
                                               onTap: () {
                                                 category.value = 'car';
                                                 controller.resetInput();
+                                                updateShowResult(false);
                                               },
                                               child: Container(
                                                 height: 50,
@@ -299,6 +307,7 @@ class _VaniryCalcState extends State<VanityCalc> {
                                               onTap: () {
                                                 category.value = 'bag';
                                                 controller.resetInput();
+                                                updateShowResult(false);
                                               },
                                               child: Container(
                                                 height: 50,
@@ -345,6 +354,7 @@ class _VaniryCalcState extends State<VanityCalc> {
                                               onTap: () {
                                                 category.value = 'IT';
                                                 controller.resetInput();
+                                                updateShowResult(false);
                                               },
                                               child: Container(
                                                 height: 50,
@@ -392,6 +402,7 @@ class _VaniryCalcState extends State<VanityCalc> {
                                               onTap: () {
                                                 category.value = 'watch';
                                                 controller.resetInput();
+                                                updateShowResult(false);
                                               },
                                               child: Container(
                                                 height: 50,
@@ -439,6 +450,7 @@ class _VaniryCalcState extends State<VanityCalc> {
                                               onTap: () {
                                                 category.value = 'expense';
                                                 controller.resetInput();
+                                                updateShowResult(false);
                                               },
                                               child: Container(
                                                 height: 50,
@@ -485,14 +497,27 @@ class _VaniryCalcState extends State<VanityCalc> {
                                             if (category.value != "")
                                               (category.value == "IT"
                                                   ? CalcITInput(
-                                                      category: category.value)
+                                                      category: category.value,
+                                                      showResult: showResult,
+                                                      onShowResultChange:
+                                                          updateShowResult)
                                                   : category.value == "expense"
                                                       ? CalcExpenseInput(
                                                           category:
-                                                              category.value)
+                                                              category.value,
+                                                          showResult:
+                                                              showResult,
+                                                          onShowResultChange:
+                                                              updateShowResult,
+                                                        )
                                                       : CalcDefaultInput(
                                                           category:
-                                                              category.value)),
+                                                              category.value,
+                                                          showResult:
+                                                              showResult,
+                                                          onShowResultChange:
+                                                              updateShowResult,
+                                                        )),
                                           ],
                                         ),
                                       ),
@@ -520,10 +545,14 @@ class _VaniryCalcState extends State<VanityCalc> {
 // 결과값 표기 위젯
 class CalcAnswer extends StatefulWidget {
   final String category;
+  final bool showResult;
+  final Function(bool) onShowResultChange;
 
   const CalcAnswer({
     super.key,
     required this.category,
+    required this.showResult,
+    required this.onShowResultChange,
   });
 
   @override
@@ -563,6 +592,7 @@ class _CalcAnswerState extends State<CalcAnswer> {
         GestureDetector(
           onTap: () {
             controller.calculateVanityScore(widget.category);
+            widget.onShowResultChange(true);
           },
           child: Container(
             height: 50,
@@ -584,145 +614,120 @@ class _CalcAnswerState extends State<CalcAnswer> {
             ),
           ),
         ),
-        Obx(
-          () => controller.resultScore.value.isNotEmpty
-              ? Container(
-                  margin: EdgeInsets.only(top: 10),
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Color(0xFFF8F9FA),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Stack(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              controller.resultTitle.value,
-                              style: TextStyle(
-                                fontSize: 28,
-                                fontWeight: FontWeight.bold,
-                                color: controller.resultColor.value,
-                              ),
-                            ),
-                            Text(
-                              "허세지수: ${controller.resultScore.value}",
-                              style: TextStyle(
-                                fontSize: 18,
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(top: 10, bottom: 10),
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 10),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "💡 맞춤 컨설팅",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(controller.resultAdvice.value),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              : SizedBox.shrink(), // 빈 공간 반환
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        Container(
-          margin: EdgeInsets.only(top: 10),
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: Color(0xFFF8F9FA),
-            borderRadius: BorderRadius.circular(10),
+        if (widget.showResult) ...[
+          ResultContext(
+            resultTitle: controller.resultTitle.value,
+            resultScore: controller.resultScore.value,
+            resultAdvice: controller.resultAdvice.value,
+            resultColor: controller.resultColor.value,
           ),
-          // 해당 부분에 card 위젯이 반복되어야 함. (layout builder사용 예정)
-          child: Column(
-            children: [
-              Text("hello update: ${widget.category}"),
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  if (constraints.maxWidth > 600) {
-                    return GridView.builder(
-                      padding: const EdgeInsets.all(16),
-                      shrinkWrap: true, // 부모 크기에 맞게 조정
-                      physics: NeverScrollableScrollPhysics(), // 자체 스크롤 제거
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 16,
-                        mainAxisSpacing: 16,
-                        childAspectRatio: 0.7,
-                      ),
-                      itemCount: filteredItems.length,
-                      itemBuilder: (context, index) {
-                        return VanityItemsCard(
-                          category: "car",
-                          item: filteredItems[index],
-                        );
-                      },
-                    );
-                  } else {
-                    return ListView.builder(
-                      padding: const EdgeInsets.all(16),
-                      shrinkWrap: true, // 부모 크기에 맞게 조정
-                      physics: NeverScrollableScrollPhysics(), // 자체 스크롤 제거
-                      // itemCount: items.length,
-                      itemCount: filteredItems.length,
-                      itemBuilder: (context, index) {
-                        return VanityItemsCard(
-                          category: widget.category,
-                          item: filteredItems[index],
-                        );
-                      },
-                    );
-                  }
-                },
-              )
-            ],
+          SizedBox(
+            height: 10,
           ),
-        ),
+          ResultLayout(
+            controller: controller,
+            widget: widget,
+            filteredItems: filteredItems,
+          ),
+        ]
       ],
     );
   }
 }
 
+// 허세지수 계산 결과를 나타내는 위젯
+class ResultContext extends StatelessWidget {
+  final String resultTitle;
+  final String resultScore;
+  final String resultAdvice;
+  final Color resultColor;
+
+  const ResultContext({
+    super.key,
+    required this.resultTitle,
+    required this.resultScore,
+    required this.resultAdvice,
+    required this.resultColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: 10),
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Color(0xFFF8F9FA),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  resultTitle,
+                  style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: resultColor),
+                ),
+                Text(
+                  "허세지수: $resultScore",
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 10, bottom: 10),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "💡 맞춤 컨설팅",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(resultAdvice),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// 자동차, 핸드백, 명품시계 허세지수
 class CalcDefaultInput extends StatelessWidget {
-  // 입력값에 쉼표 구분을 위한 컨트롤러
-  final TextEditingController monthPriceInputController =
-      TextEditingController();
-  final TextEditingController priceInputController = TextEditingController();
   // 전달 받은 카테고리 항목
   final String category;
+  final bool showResult;
+  final Function(bool) onShowResultChange;
 
   CalcDefaultInput({
     super.key,
     required this.category,
+    required this.showResult,
+    required this.onShowResultChange,
   });
 
   final VanityController controller = Get.find();
@@ -740,7 +745,6 @@ class CalcDefaultInput extends StatelessWidget {
           ),
           CustomNumberField(
             hintText: "월급을 입력하세요",
-            controller: monthPriceInputController,
             onChanged: (value) {
               controller.monthPrice.value = value;
             },
@@ -751,13 +755,14 @@ class CalcDefaultInput extends StatelessWidget {
           ),
           CustomNumberField(
             hintText: "가격을 입력하세요.",
-            controller: priceInputController,
             onChanged: (value) {
               controller.price.value = value;
             },
           ),
           CalcAnswer(
             category: category,
+            showResult: showResult,
+            onShowResultChange: onShowResultChange,
           ),
         ],
       ),
@@ -768,7 +773,14 @@ class CalcDefaultInput extends StatelessWidget {
 // 스마트기기 허세지수
 class CalcITInput extends StatefulWidget {
   final String category;
-  const CalcITInput({super.key, required this.category});
+  final bool showResult;
+  final Function(bool) onShowResultChange;
+  const CalcITInput({
+    super.key,
+    required this.category,
+    required this.showResult,
+    required this.onShowResultChange,
+  });
 
   @override
   State<CalcITInput> createState() => _CalcITState();
@@ -777,10 +789,6 @@ class CalcITInput extends StatefulWidget {
 class _CalcITState extends State<CalcITInput> {
   final VanityController controller = Get.find();
   final RxString dropDownValue = '스마트폰 (24개월)'.obs;
-  final monthPriceInputController = TextEditingController();
-  final TextEditingController priceInputController = TextEditingController();
-  final TextEditingController fixedExpenseInputController =
-      TextEditingController();
 
   List<String> itList = ['스마트폰 (24개월)', '노트북 (36개월)', '테블릿 (48개월)'];
 
@@ -803,7 +811,6 @@ class _CalcITState extends State<CalcITInput> {
           ),
           CustomNumberField(
             hintText: "월급을 입력하세요",
-            controller: monthPriceInputController,
             onChanged: (value) => controller.monthPrice.value = value,
           ),
           Padding(
@@ -812,7 +819,6 @@ class _CalcITState extends State<CalcITInput> {
           ),
           CustomNumberField(
             hintText: "가격을 입력하세요",
-            controller: priceInputController,
             onChanged: (value) => controller.price.value = value,
           ),
           Padding(
@@ -821,7 +827,6 @@ class _CalcITState extends State<CalcITInput> {
           ),
           CustomNumberField(
             hintText: "월 고정 지출액 (주거비, 생활비 등)",
-            controller: fixedExpenseInputController,
             onChanged: (value) => controller.fixedExpenses.value = value,
           ),
           Padding(
@@ -856,6 +861,8 @@ class _CalcITState extends State<CalcITInput> {
           ),
           CalcAnswer(
             category: widget.category,
+            showResult: widget.showResult,
+            onShowResultChange: widget.onShowResultChange,
           ),
         ],
       ),
@@ -866,14 +873,15 @@ class _CalcITState extends State<CalcITInput> {
 // 지출 허세지수
 class CalcExpenseInput extends StatelessWidget {
   final String category;
+  final bool showResult;
   final VanityController controller = Get.find();
-  CalcExpenseInput({super.key, required this.category});
-
-  final TextEditingController monthPriceInputController =
-      TextEditingController();
-  final TextEditingController priceInputController = TextEditingController();
-  final TextEditingController fixedExpenseInputController =
-      TextEditingController();
+  final Function(bool) onShowResultChange;
+  CalcExpenseInput({
+    super.key,
+    required this.category,
+    required this.showResult,
+    required this.onShowResultChange,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -888,7 +896,6 @@ class CalcExpenseInput extends StatelessWidget {
           ),
           CustomNumberField(
             hintText: "월급을 입력하세요.",
-            controller: monthPriceInputController,
             onChanged: (value) => controller.monthPrice.value = value,
           ),
           Padding(
@@ -897,7 +904,6 @@ class CalcExpenseInput extends StatelessWidget {
           ),
           CustomNumberField(
             hintText: "가격을 입력하세요.",
-            controller: priceInputController,
             onChanged: (value) => controller.price.value = value,
           ),
           Padding(
@@ -921,6 +927,8 @@ class CalcExpenseInput extends StatelessWidget {
           ),
           CalcAnswer(
             category: category,
+            showResult: showResult,
+            onShowResultChange: onShowResultChange,
           ),
         ],
       ),
@@ -929,17 +937,34 @@ class CalcExpenseInput extends StatelessWidget {
 }
 
 // 숫자 입력 포맷팅 커스텀위젯
-class CustomNumberField extends StatelessWidget {
-  final TextEditingController controller;
+class CustomNumberField extends StatefulWidget {
   final String hintText;
   final ValueChanged<String>? onChanged;
 
   const CustomNumberField({
     super.key,
     required this.hintText,
-    required this.controller,
     this.onChanged,
   });
+
+  @override
+  State<CustomNumberField> createState() => _CustomNumberFieldState();
+}
+
+class _CustomNumberFieldState extends State<CustomNumberField> {
+  late TextEditingController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -948,9 +973,11 @@ class CustomNumberField extends StatelessWidget {
       onChanged: (value) {
         // 숫자만 추출
         final rawValue = value.replaceAll(RegExp(r'[^0-9]'), '');
+
         // 포맷팅된 값으로 업데이트
         final formattedValue =
             NumberFormat("#,###").format(int.tryParse(rawValue) ?? 0);
+
         // 커서 위치 보정
         final cursorPosition = formattedValue.length;
         // 포맷팅된 값으로 TextField 업데이트
@@ -958,19 +985,92 @@ class CustomNumberField extends StatelessWidget {
           text: formattedValue,
           selection: TextSelection.collapsed(offset: cursorPosition),
         );
+
         // 외부 컨트롤러를 업데이트 하기 위한 상태 전달
-        if (onChanged != null) {
-          onChanged!(rawValue);
+        if (widget.onChanged != null) {
+          widget.onChanged!(rawValue);
         }
       },
       decoration: InputDecoration(
-        hintText: hintText,
+        hintText: widget.hintText,
         contentPadding: EdgeInsets.symmetric(horizontal: 10),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
         ),
       ),
       keyboardType: TextInputType.number,
+    );
+  }
+}
+
+// 계산 결과에 따른 상품 리스트 위젯
+class ResultLayout extends StatelessWidget {
+  const ResultLayout({
+    super.key,
+    required this.controller,
+    required this.widget,
+    required this.filteredItems,
+  });
+
+  final VanityController controller;
+  final CalcAnswer widget;
+  final List<Map<String, dynamic>> filteredItems;
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(
+      () => controller.resultScore.value.isNotEmpty
+          ? Container(
+              margin: EdgeInsets.only(top: 10),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Color(0xFFF8F9FA),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Column(
+                children: [
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      if (constraints.maxWidth > 600) {
+                        return GridView.builder(
+                          padding: const EdgeInsets.all(16),
+                          shrinkWrap: true, // 부모 크기에 맞게 조정
+                          physics: NeverScrollableScrollPhysics(), // 자체 스크롤 제거
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            crossAxisSpacing: 16,
+                            mainAxisSpacing: 16,
+                            childAspectRatio: 0.7,
+                          ),
+                          itemCount: filteredItems.length,
+                          itemBuilder: (context, index) {
+                            return VanityItemsCard(
+                              category: "car",
+                              item: filteredItems[index],
+                            );
+                          },
+                        );
+                      } else {
+                        return ListView.builder(
+                          padding: const EdgeInsets.all(16),
+                          shrinkWrap: true, // 부모 크기에 맞게 조정
+                          physics: NeverScrollableScrollPhysics(), // 자체 스크롤 제거
+                          itemCount: filteredItems.length,
+                          itemBuilder: (context, index) {
+                            return VanityItemsCard(
+                              category: widget.category,
+                              item: filteredItems[index],
+                            );
+                          },
+                        );
+                      }
+                    },
+                  )
+                ],
+              ),
+            )
+          : SizedBox.shrink(),
     );
   }
 }
@@ -998,23 +1098,21 @@ class _VanityItemsCardState extends State<VanityItemsCard> {
     return formatter.format(price); // 쉼표로 구분된 숫자 반환
   }
 
+  // 다시 계산하는 함수
+  final VanityController controller = Get.find();
+
   @override
   Widget build(BuildContext context) {
-    // 각각의 card 에 대해서 허세지수와 허세 점수를 다시 계산하기 위한 로직 생성 필요
-    final VanityController controller = Get.find();
-
-    void recalculateVanityScore(String category, int price) {
-      controller.price.value = price.toString(); // 값 업데이트
-      controller.calculateVanityScore(category); // 기존 계산 함수 호출
-    }
-
+    final newResultScore = controller.updatePriceAndRecalculate(
+      widget.item["price"],
+      widget.category,
+    );
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       elevation: 4,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("${widget.item["price"]}"),
           SizedBox(
             height: 200,
             child: ClipRRect(
@@ -1042,13 +1140,16 @@ class _VanityItemsCardState extends State<VanityItemsCard> {
                   style: TextStyle(color: Colors.grey[600], fontSize: 14),
                 ),
                 Text(
-                  "허세지수: vanityScore",
-                  style: const TextStyle(color: Colors.red, fontSize: 14),
+                  "허세지수: ${double.parse(newResultScore["newVanityScore"].toStringAsFixed(2))}",
+                  style: TextStyle(
+                    color: newResultScore["color"],
+                    fontSize: 14,
+                  ),
                 ),
                 Text(
-                  "허세 타이틀: vanityScore",
+                  newResultScore["title"],
                   style: TextStyle(
-                      color: Colors.red,
+                      color: newResultScore["color"],
                       fontWeight: FontWeight.bold,
                       fontSize: 14),
                 ),
