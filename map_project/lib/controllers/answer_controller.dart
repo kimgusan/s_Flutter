@@ -17,8 +17,9 @@ class AnswerController extends GetxController {
 
   void calculateAnswer() {
     // score 점수 확인 후 +1 을 하는게 맞는지 score 그대로 적는게 맞는지 확인 필요
-    totalScore.value = questionController.selectedAnswers
-        .fold<int>(0, (sum, score) => sum + (score != null ? score + 1 : 0));
+    // totalScore.value = questionController.selectedAnswers
+    //     .fold<int>(0, (sum, score) => sum + (score != null ? score + 1 : 0));
+    totalScore.value = 80;
 
     if (totalScore.value < 30) {
       _setResult(0, [0, 5, 1]);

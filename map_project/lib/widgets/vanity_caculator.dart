@@ -48,130 +48,121 @@ class _VaniryCalcState extends State<VanityCalc> {
           padding: EdgeInsets.all(20),
           child: Center(
             child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.calculate),
-                      Text(
-                        " 종합 허세지수 계산기 ",
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
+              child: Container(
+                width: double.infinity,
+                constraints: BoxConstraints(maxWidth: 500),
+                margin: EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.calculate),
+                        Text(
+                          " 종합 허세지수 계산기 ",
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      Icon(
-                        Icons.monetization_on_outlined,
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Stack(
-                          children: [
-                            Center(
-                              child: ConstrainedBox(
-                                constraints:
-                                    const BoxConstraints(maxWidth: 448),
-                                child: Container(
-                                  width: double.infinity,
-                                  padding: EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(8),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black26,
-                                        blurRadius: 10,
-                                        offset: const Offset(0, 4),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        padding: EdgeInsets.only(top: 10),
-                                        child: Text(
-                                          textAlign: TextAlign.center,
-                                          "성별 선택",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Color(0xFF2D3748),
-                                              fontSize: 20),
+                        Icon(
+                          Icons.monetization_on_outlined,
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Stack(
+                            children: [
+                              Center(
+                                child: ConstrainedBox(
+                                  constraints:
+                                      const BoxConstraints(maxWidth: 448),
+                                  child: Container(
+                                    width: double.infinity,
+                                    padding: EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(8),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black26,
+                                          blurRadius: 10,
+                                          offset: const Offset(0, 4),
                                         ),
-                                      ),
-                                      Container(
-                                        padding: EdgeInsets.only(
-                                            top: 10, bottom: 10),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Expanded(
-                                                  child: Container(
-                                                    margin:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 10),
-                                                    child: ElevatedButton(
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
-                                                        ),
-                                                        backgroundColor: gender
-                                                                    .value ==
-                                                                'male'
-                                                            ? Color(0xFF3B82F6)
-                                                            : Colors.grey[200],
-                                                      ),
-                                                      onPressed: () {
-                                                        gender.value = "male";
-                                                      },
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .end,
-                                                        textBaseline:
-                                                            TextBaseline
-                                                                .alphabetic,
-                                                        children: [
-                                                          Icon(
-                                                            Icons
-                                                                .car_crash_outlined,
-                                                            size: 21,
-                                                            color:
-                                                                gender.value ==
-                                                                        'male'
-                                                                    ? Colors
-                                                                        .white
-                                                                    : Colors
-                                                                        .black,
+                                      ],
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.only(top: 10),
+                                          child: Text(
+                                            textAlign: TextAlign.center,
+                                            "성별 선택",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Color(0xFF2D3748),
+                                                fontSize: 20),
+                                          ),
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.only(
+                                              top: 10, bottom: 10),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Expanded(
+                                                    child: Container(
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 10),
+                                                      child: ElevatedButton(
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
                                                           ),
-                                                          SizedBox(width: 4),
-                                                          Text(
-                                                            "남성",
-                                                            style: TextStyle(
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
+                                                          backgroundColor: gender
+                                                                      .value ==
+                                                                  'male'
+                                                              ? Color(
+                                                                  0xFF3B82F6)
+                                                              : Colors
+                                                                  .grey[200],
+                                                        ),
+                                                        onPressed: () {
+                                                          gender.value = "male";
+                                                        },
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .end,
+                                                          textBaseline:
+                                                              TextBaseline
+                                                                  .alphabetic,
+                                                          children: [
+                                                            Icon(
+                                                              Icons
+                                                                  .car_crash_outlined,
+                                                              size: 21,
                                                               color:
                                                                   gender.value ==
                                                                           'male'
@@ -180,66 +171,70 @@ class _VaniryCalcState extends State<VanityCalc> {
                                                                       : Colors
                                                                           .black,
                                                             ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  child: Container(
-                                                    margin:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 10),
-                                                    child: ElevatedButton(
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
-                                                        ),
-                                                        backgroundColor: gender
-                                                                    .value ==
-                                                                'female'
-                                                            ? Color(0xFFDB2777)
-                                                            : Colors.grey[200],
-                                                      ),
-                                                      onPressed: () {
-                                                        gender.value = 'female';
-                                                      },
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .end,
-                                                        textBaseline:
-                                                            TextBaseline
-                                                                .alphabetic,
-                                                        children: [
-                                                          Icon(
-                                                            Icons
-                                                                .backpack_outlined,
-                                                            size: 21,
-                                                            color:
-                                                                gender.value ==
-                                                                        'female'
+                                                            SizedBox(width: 4),
+                                                            Text(
+                                                              "남성",
+                                                              style: TextStyle(
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: gender
+                                                                            .value ==
+                                                                        'male'
                                                                     ? Colors
                                                                         .white
                                                                     : Colors
                                                                         .black,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    child: Container(
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 10),
+                                                      child: ElevatedButton(
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
                                                           ),
-                                                          SizedBox(width: 4),
-                                                          Text(
-                                                            "여성",
-                                                            style: TextStyle(
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
+                                                          backgroundColor: gender
+                                                                      .value ==
+                                                                  'female'
+                                                              ? Color(
+                                                                  0xFFDB2777)
+                                                              : Colors
+                                                                  .grey[200],
+                                                        ),
+                                                        onPressed: () {
+                                                          gender.value =
+                                                              'female';
+                                                        },
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .end,
+                                                          textBaseline:
+                                                              TextBaseline
+                                                                  .alphabetic,
+                                                          children: [
+                                                            Icon(
+                                                              Icons
+                                                                  .backpack_outlined,
+                                                              size: 21,
                                                               color: gender
                                                                           .value ==
                                                                       'female'
@@ -247,89 +242,59 @@ class _VaniryCalcState extends State<VanityCalc> {
                                                                   : Colors
                                                                       .black,
                                                             ),
-                                                          ),
-                                                        ],
+                                                            SizedBox(width: 4),
+                                                            Text(
+                                                              "여성",
+                                                              style: TextStyle(
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: gender
+                                                                            .value ==
+                                                                        'female'
+                                                                    ? Colors
+                                                                        .white
+                                                                    : Colors
+                                                                        .black,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(height: 15),
-                                            GestureDetector(
-                                              onTap: () {
-                                                category.value = 'car';
-                                                controller.resetInput();
-                                                updateShowResult(false);
-                                              },
-                                              child: Container(
-                                                height: 50,
-                                                margin: EdgeInsets.all(5),
-                                                decoration: BoxDecoration(
-                                                    color:
-                                                        category.value == 'car'
-                                                            ? Color(0xFF2B5FE2)
-                                                            : Colors.grey[200],
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10)),
-                                                child: Center(
-                                                    child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Icon(
-                                                      Icons.car_crash,
-                                                      size: 20, // 아이콘 크기 설정
+                                                ],
+                                              ),
+                                              SizedBox(height: 15),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  category.value = 'car';
+                                                  controller.resetInput();
+                                                  updateShowResult(false);
+                                                },
+                                                child: Container(
+                                                  height: 50,
+                                                  margin: EdgeInsets.all(5),
+                                                  decoration: BoxDecoration(
                                                       color: category.value ==
                                                               'car'
-                                                          ? Colors.white
-                                                          : Colors.black,
-                                                    ),
-                                                    SizedBox(
-                                                      width: 2,
-                                                    ),
-                                                    Text(
-                                                      '자동차 허세지수',
-                                                      style: TextStyle(
-                                                          fontSize: 14,
-                                                          color: category
-                                                                      .value ==
-                                                                  'car'
-                                                              ? Colors.white
-                                                              : Colors.black),
-                                                    ),
-                                                  ],
-                                                )),
-                                              ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                category.value = 'bag';
-                                                controller.resetInput();
-                                                updateShowResult(false);
-                                              },
-                                              child: Container(
-                                                height: 50,
-                                                margin: EdgeInsets.all(5),
-                                                decoration: BoxDecoration(
-                                                  color: category.value == 'bag'
-                                                      ? Color(0xFFdb2777)
-                                                      : Colors.grey[200],
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                                child: Center(
-                                                  child: Row(
+                                                          ? Color(0xFF2B5FE2)
+                                                          : Colors.grey[200],
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10)),
+                                                  child: Center(
+                                                      child: Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
                                                             .center,
                                                     children: [
                                                       Icon(
-                                                        Icons.luggage,
+                                                        Icons.car_crash,
                                                         size: 20, // 아이콘 크기 설정
                                                         color: category.value ==
-                                                                'bag'
+                                                                'car'
                                                             ? Colors.white
                                                             : Colors.black,
                                                       ),
@@ -337,202 +302,293 @@ class _VaniryCalcState extends State<VanityCalc> {
                                                         width: 2,
                                                       ),
                                                       Text(
-                                                        '핸드백 허세지수',
+                                                        '자동차 허세지수',
                                                         style: TextStyle(
+                                                            fontSize: 14,
                                                             color: category
                                                                         .value ==
-                                                                    'bag'
+                                                                    'car'
                                                                 ? Colors.white
                                                                 : Colors.black),
                                                       ),
                                                     ],
-                                                  ),
+                                                  )),
                                                 ),
                                               ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                category.value = 'IT';
-                                                controller.resetInput();
-                                                updateShowResult(false);
-                                              },
-                                              child: Container(
-                                                height: 50,
-                                                margin: EdgeInsets.all(5),
-                                                decoration: BoxDecoration(
+                                              GestureDetector(
+                                                onTap: () {
+                                                  category.value = 'bag';
+                                                  controller.resetInput();
+                                                  updateShowResult(false);
+                                                },
+                                                child: Container(
+                                                  height: 50,
+                                                  margin: EdgeInsets.all(5),
+                                                  decoration: BoxDecoration(
                                                     color:
-                                                        category.value == 'IT'
-                                                            ? Color(0xFF9333EA)
+                                                        category.value == 'bag'
+                                                            ? Color(0xFFdb2777)
                                                             : Colors.grey[200],
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            10)),
-                                                child: Center(
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Icon(
-                                                        Icons.phone_android,
-                                                        size: 20, // 아이콘 크기 설정
-                                                        color: category.value ==
-                                                                'IT'
-                                                            ? Colors.white
-                                                            : Colors.black,
-                                                      ),
-                                                      SizedBox(
-                                                        width: 2,
-                                                      ),
-                                                      Text(
-                                                        '스마트기기 허세지수',
-                                                        style: TextStyle(
-                                                            color: category
-                                                                        .value ==
-                                                                    'IT'
-                                                                ? Colors.white
-                                                                : Colors.black),
-                                                      )
-                                                    ],
+                                                            10),
+                                                  ),
+                                                  child: Center(
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Icon(
+                                                          Icons.luggage,
+                                                          size: 20, // 아이콘 크기 설정
+                                                          color: category
+                                                                      .value ==
+                                                                  'bag'
+                                                              ? Colors.white
+                                                              : Colors.black,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 2,
+                                                        ),
+                                                        Text(
+                                                          '핸드백 허세지수',
+                                                          style: TextStyle(
+                                                              color: category
+                                                                          .value ==
+                                                                      'bag'
+                                                                  ? Colors.white
+                                                                  : Colors
+                                                                      .black),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                category.value = 'watch';
-                                                controller.resetInput();
-                                                updateShowResult(false);
-                                              },
-                                              child: Container(
-                                                height: 50,
-                                                margin: EdgeInsets.all(5),
-                                                decoration: BoxDecoration(
-                                                    color: category.value ==
-                                                            'watch'
-                                                        ? Color(0xFFD97706)
-                                                        : Colors.grey[200],
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10)),
-                                                child: Center(
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Icon(
-                                                        Icons.watch,
-                                                        size: 20, // 아이콘 크기 설정
-                                                        color: category.value ==
-                                                                'watch'
-                                                            ? Colors.white
-                                                            : Colors.black,
-                                                      ),
-                                                      SizedBox(
-                                                        width: 2,
-                                                      ),
-                                                      Text(
-                                                        '명품시계 허세지수',
-                                                        style: TextStyle(
-                                                            color: category
-                                                                        .value ==
-                                                                    'watch'
-                                                                ? Colors.white
-                                                                : Colors.black),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                category.value = 'expense';
-                                                controller.resetInput();
-                                                updateShowResult(false);
-                                              },
-                                              child: Container(
-                                                height: 50,
-                                                margin: EdgeInsets.all(5),
-                                                decoration: BoxDecoration(
-                                                    color: category.value ==
-                                                            'expense'
-                                                        ? Color(0xFF1BA34A)
-                                                        : Colors.grey[200],
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10)),
-                                                child: Center(
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Icon(
-                                                        Icons.wallet,
-                                                        size: 20, // 아이콘 크기 설정
-                                                        color: category.value ==
-                                                                'expense'
-                                                            ? Colors.white
-                                                            : Colors.black,
-                                                      ),
-                                                      SizedBox(
-                                                        width: 2,
-                                                      ),
-                                                      Text(
-                                                        '지출 허세지수',
-                                                        style: TextStyle(
-                                                            color: category
-                                                                        .value ==
-                                                                    'expense'
-                                                                ? Colors.white
-                                                                : Colors.black),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            if (category.value != "")
-                                              (category.value == "IT"
-                                                  ? CalcITInput(
-                                                      category: category.value,
-                                                      showResult: showResult,
-                                                      onShowResultChange:
-                                                          updateShowResult)
-                                                  : category.value == "expense"
-                                                      ? CalcExpenseInput(
-                                                          category:
-                                                              category.value,
-                                                          showResult:
-                                                              showResult,
-                                                          onShowResultChange:
-                                                              updateShowResult,
+                                              GestureDetector(
+                                                onTap: () {
+                                                  category.value = 'IT';
+                                                  controller.resetInput();
+                                                  updateShowResult(false);
+                                                },
+                                                child: Container(
+                                                  height: 50,
+                                                  margin: EdgeInsets.all(5),
+                                                  decoration: BoxDecoration(
+                                                      color: category.value ==
+                                                              'IT'
+                                                          ? Color(0xFF9333EA)
+                                                          : Colors.grey[200],
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10)),
+                                                  child: Center(
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Icon(
+                                                          Icons.phone_android,
+                                                          size: 20, // 아이콘 크기 설정
+                                                          color: category
+                                                                      .value ==
+                                                                  'IT'
+                                                              ? Colors.white
+                                                              : Colors.black,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 2,
+                                                        ),
+                                                        Text(
+                                                          '스마트기기 허세지수',
+                                                          style: TextStyle(
+                                                              color: category
+                                                                          .value ==
+                                                                      'IT'
+                                                                  ? Colors.white
+                                                                  : Colors
+                                                                      .black),
                                                         )
-                                                      : CalcDefaultInput(
-                                                          category:
-                                                              category.value,
-                                                          showResult:
-                                                              showResult,
-                                                          onShowResultChange:
-                                                              updateShowResult,
-                                                        )),
-                                          ],
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  category.value = 'watch';
+                                                  controller.resetInput();
+                                                  updateShowResult(false);
+                                                },
+                                                child: Container(
+                                                  height: 50,
+                                                  margin: EdgeInsets.all(5),
+                                                  decoration: BoxDecoration(
+                                                      color: category.value ==
+                                                              'watch'
+                                                          ? Color(0xFFD97706)
+                                                          : Colors.grey[200],
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10)),
+                                                  child: Center(
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Icon(
+                                                          Icons.watch,
+                                                          size: 20, // 아이콘 크기 설정
+                                                          color: category
+                                                                      .value ==
+                                                                  'watch'
+                                                              ? Colors.white
+                                                              : Colors.black,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 2,
+                                                        ),
+                                                        Text(
+                                                          '명품시계 허세지수',
+                                                          style: TextStyle(
+                                                              color: category
+                                                                          .value ==
+                                                                      'watch'
+                                                                  ? Colors.white
+                                                                  : Colors
+                                                                      .black),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  category.value = 'expense';
+                                                  controller.resetInput();
+                                                  updateShowResult(false);
+                                                },
+                                                child: Container(
+                                                  height: 50,
+                                                  margin: EdgeInsets.all(5),
+                                                  decoration: BoxDecoration(
+                                                      color: category.value ==
+                                                              'expense'
+                                                          ? Color(0xFF1BA34A)
+                                                          : Colors.grey[200],
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10)),
+                                                  child: Center(
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Icon(
+                                                          Icons.wallet,
+                                                          size: 20, // 아이콘 크기 설정
+                                                          color: category
+                                                                      .value ==
+                                                                  'expense'
+                                                              ? Colors.white
+                                                              : Colors.black,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 2,
+                                                        ),
+                                                        Text(
+                                                          '지출 허세지수',
+                                                          style: TextStyle(
+                                                              color: category
+                                                                          .value ==
+                                                                      'expense'
+                                                                  ? Colors.white
+                                                                  : Colors
+                                                                      .black),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              if (category.value != "")
+                                                (category.value == "IT"
+                                                    ? CalcITInput(
+                                                        category:
+                                                            category.value,
+                                                        showResult: showResult,
+                                                        onShowResultChange:
+                                                            updateShowResult)
+                                                    : category.value ==
+                                                            "expense"
+                                                        ? CalcExpenseInput(
+                                                            category:
+                                                                category.value,
+                                                            showResult:
+                                                                showResult,
+                                                            onShowResultChange:
+                                                                updateShowResult,
+                                                          )
+                                                        : CalcDefaultInput(
+                                                            category:
+                                                                category.value,
+                                                            showResult:
+                                                                showResult,
+                                                            onShowResultChange:
+                                                                updateShowResult,
+                                                          )),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFF2C61E6),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              padding: EdgeInsets.all(12),
+                            ),
+                            onPressed: () {
+                              Get.toNamed('/');
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(
+                                  "초기화면으로",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  // 결과가 있는 경우에만 아래쪽에 리스트를 내보내는 설정
-                ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
